@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ModVault</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: #141313;
+      color: #e5e2e1;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 10, 0.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .nav-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand { color: #fff; font-weight: 700; letter-spacing: -0.02em; font-size: 18px; }
+    .muted { color: #8e9192; font-size: 13px; }
+
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 18px 16px 36px;
+    }
+    .hero {
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .hero h1 { font-size: clamp(24px, 4vw, 34px); color: #fff; letter-spacing: -0.03em; }
+    .hero p { color: #9ca1a3; font-size: 14px; line-height: 1.6; }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      margin: 14px 0 18px;
+      flex-wrap: wrap;
+    }
+    .search {
+      flex: 1;
+      min-width: 220px;
+      background: #201f1f;
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #e5e2e1;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      outline: none;
+    }
+    .search:focus { border-color: rgba(255,255,255,0.24); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: #1a1919;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 18px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+      transition: transform .16s ease, border-color .2s ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.2);
+    }
+    .thumb {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 12px;
+      object-fit: cover;
+      background: #242323;
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+    .title { font-size: 16px; font-weight: 700; color: #fff; line-height: 1.3; }
+    .desc {
+      font-size: 13px;
+      color: #9aa0a2;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 38px;
+    }
+    .meta { font-size: 11px; color: #6d7274; text-transform: uppercase; letter-spacing: 0.08em; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip {
+      font-size: 11px;
+      color: #c4c7c8;
+      background: #252424;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 999px;
+      padding: 4px 9px;
+    }
+
+    .status {
+      text-align: center;
+      color: #8e9192;
+      font-size: 14px;
+      padding: 28px 10px;
+      border: 1px dashed rgba(255,255,255,0.12);
+      border-radius: 14px;
+      background: #191818;
+    }
+
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      margin-top: 28px;
+      padding: 18px 12px;
+      text-align: center;
+      color: #5b5f61;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <div class="brand" id="brand">ModVault</div>
+      <div class="muted">Mod APK Library</div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <h1>Download your favorite apps</h1>
+      <p>Fast, clean and mobile-friendly app listing page powered by Google Sheet.</p>
+    </section>
+
+    <div class="toolbar">
+      <input id="search" class="search" placeholder="Search app name..." />
+    </div>
+
+    <div id="status" class="status">Loading apps...</div>
+    <div id="grid" class="grid" style="display:none"></div>
+  </main>
+
+  <footer id="copyright">© 2026 ModVault</footer>
+
+  <script src="./config.js"></script>
+  <script>
+    const BRAND = window.APP_CONFIG?.BRAND || "ModVault";
+    const SHEET_ID = window.APP_CONFIG?.SHEET_ID || "";
+    const COPYRIGHT = window.APP_CONFIG?.COPYRIGHT || "© 2026 ModVault";
+
+    document.getElementById("brand").textContent = BRAND;
+    document.getElementById("copyright").textContent = COPYRIGHT;
+    document.title = BRAND;
+
+    let apps = [];
+
+    function parseGvizJson(text) {
+      return JSON.parse(text.substring(47).slice(0, -2));
+    }
+
+    function normalize(cell, fallback = "") {
+      if (!cell) return fallback;
+      if (cell.f != null) return String(cell.f);
+      if (cell.v != null) return String(cell.v);
+      return fallback;
+    }
+
+    async function fetchApps() {
+      if (!SHEET_ID || SHEET_ID === "PASTE_YOUR_SHEET_ID_HERE") {
+        throw new Error("Sheet ID missing in config.js");
+      }
+
+      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+      const res = await fetch(url);
+      const text = await res.text();
+      const json = parseGvizJson(text);
+
+      return (json.table.rows || []).map((r, index) => ({
+        id: index + 1,
+        name: normalize(r.c[0], "App"),
+        description: normalize(r.c[1], ""),
+        icon: normalize(r.c[2], ""),
+        version: normalize(r.c[3], ""),
+        platform: normalize(r.c[4], ""),
+        downloadUrl: normalize(r.c[5], ""),
+        smartLink: normalize(r.c[6], ""),
+        features: normalize(r.c[7], "")
+      })).filter(a => a.name.trim() !== "");
+    }
+
+    function cardHtml(app) {
+      const chips = app.features
+        .split(",")
+        .map(v => v.trim())
+        .filter(Boolean)
+        .slice(0, 3)
+        .map(v => `<span class="chip">${v}</span>`)
+        .join("");
+
+      return `
+        <a class="card" href="./dl.html?id=${app.id}">
+          <img class="thumb" src="${app.icon}" alt="${app.name}" onerror="this.src=''; this.style.background='#2a2a2a'" />
+          <div class="title">${app.name}</div>
+          <div class="desc">${app.description || "No description"}</div>
+          <div class="meta">${[app.version ? `v${app.version}` : "", app.platform].filter(Boolean).join(" · ")}</div>
+          ${chips ? `<div class="chips">${chips}</div>` : ""}
+        </a>
+      `;
+    }
+
+    function render(list) {
+      const status = document.getElementById("status");
+      const grid = document.getElementById("grid");
+
+      if (!list.length) {
+        status.style.display = "block";
+        status.textContent = "No apps found.";
+        grid.style.display = "none";
+        return;
+      }
+
+      grid.innerHTML = list.map(cardHtml).join("");
+      status.style.display = "none";
+      grid.style.display = "grid";
+    }
+
+    function setupSearch() {
+      const input = document.getElementById("search");
+      input.addEventListener("input", () => {
+        const q = input.value.trim().toLowerCase();
+        if (!q) return render(apps);
+        render(apps.filter(a =>
+          a.name.toLowerCase().includes(q) ||
+          a.description.toLowerCase().includes(q) ||
+          a.features.toLowerCase().includes(q)
+        ));
+      });
+    }
+
+    (async function init() {
+      try {
+        apps = await fetchApps();
+        render(apps);
+        setupSearch();
+      } catch (err) {
+        const status = document.getElementById("status");
+        status.style.display = "block";
+        status.textContent = "Error loading data. Open config.js and set your Google Sheet ID.";
+        console.error(err);
+      }
+    })();
+  </script>
+</body>
+</html>
