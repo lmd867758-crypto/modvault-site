@@ -247,7 +247,7 @@
         <span id="app-meta" class="app-meta"></span>
         <span id="smartlink-hint" class="smartlink-hint" style="display:none;">
           <span class="material-symbols-outlined">touch_app</span>
-          Tap the button once more to download
+          <span id="hint-text">Step 1: First tap opens smart link. Come back and tap again for download.</span>
         </span>
       </div>
 
@@ -320,13 +320,15 @@
       if (!clickedOnce) {
         clickedOnce = true;
         window.open(appSmartLink, "_blank", "noopener,noreferrer");
-        document.getElementById("btn-text").textContent = "Tap Again to Download";
+        document.getElementById("btn-text").textContent = "Step 2: Tap to Download";
+        document.getElementById("hint-text").textContent = "Step 1 done. Press Back, return here, then tap again for download.";
         document.getElementById("smartlink-hint").style.display = "flex";
       } else {
         clickedOnce = false;
         if (hasDownload) window.open(appDownloadUrl, "_blank", "noopener,noreferrer");
         document.getElementById("btn-text").textContent = "Download Now";
-        document.getElementById("smartlink-hint").style.display = "none";
+        document.getElementById("hint-text").textContent = "Step 1: First tap opens smart link. Come back and tap again for download.";
+        document.getElementById("smartlink-hint").style.display = "flex";
       }
     }
 
@@ -359,7 +361,12 @@
         document.getElementById("feature-chips").innerHTML = chips.map(f => `<span class="chip">${f}</span>`).join("");
       }
 
-      document.getElementById("smartlink-hint").style.display = "none";
+      if (appSmartLink) {
+        document.getElementById("hint-text").textContent = "Step 1: First tap opens smart link. Come back and tap again for download.";
+        document.getElementById("smartlink-hint").style.display = "flex";
+      } else {
+        document.getElementById("smartlink-hint").style.display = "none";
+      }
       document.getElementById("loading").style.display = "none";
       document.getElementById("content").style.display = "flex";
     }
