@@ -347,7 +347,7 @@
       document.getElementById("app-meta").textContent = parts.join(" · ");
 
       appDownloadUrl = app.downloadUrl || "";
-      appSmartLink = app.smartLink || "";
+      appSmartLink = GLOBAL_SMART_LINK || "";
 
       if (!appDownloadUrl && !appSmartLink) {
         document.getElementById("download-btn").classList.add("disabled");
