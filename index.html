@@ -48,6 +48,7 @@
     }
 
     .topbar {
+      position: relative;
       display: grid;
       grid-template-columns: auto 1fr auto;
       align-items: center;
@@ -126,6 +127,37 @@
       color: #25314b;
       box-shadow: 0 2px 8px rgba(30, 40, 70, .08);
     }
+
+    .mobile-menu-panel {
+      position: absolute;
+      right: 12px;
+      top: 58px;
+      background: #fff;
+      border: 1px solid #d9e2ec;
+      border-radius: 12px;
+      box-shadow: 0 10px 24px rgba(20, 35, 60, .15);
+      padding: 6px;
+      min-width: 150px;
+      z-index: 40;
+      display: none;
+    }
+
+    .mobile-menu-panel.open { display: block; }
+
+    .mobile-menu-item {
+      display: block;
+      width: 100%;
+      border: none;
+      background: transparent;
+      text-align: left;
+      padding: 10px 12px;
+      border-radius: 10px;
+      color: #25314b;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .mobile-menu-item:hover { background: #edf3f8; }
 
     .mobile-strip {
       display: none;
@@ -496,7 +528,11 @@
         <a href="#">My Library</a>
         <a href="#">Sign In</a>
       </nav>
-      <button class="mobile-menu" type="button" aria-label="Open menu">☰</button>
+      <button id="mobile-menu-btn" class="mobile-menu" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
+      <div id="mobile-menu-panel" class="mobile-menu-panel" aria-label="Mobile menu">
+        <button class="mobile-menu-item" type="button">My Library</button>
+        <button class="mobile-menu-item" type="button">Sign In</button>
+      </div>
     </header>
 
     <div id="mobile-filters" class="mobile-strip" aria-label="Mobile quick filters">
@@ -767,6 +803,39 @@
       }).join('');
     }
 
+    function setupMobileMenu() {
+      const btn = document.getElementById('mobile-menu-btn');
+      const panel = document.getElementById('mobile-menu-panel');
+      if (!btn || !panel) return;
+
+      const closeMenu = () => {
+        panel.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      };
+
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const willOpen = !panel.classList.contains('open');
+        panel.classList.toggle('open', willOpen);
+        btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      });
+
+      panel.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+
+      panel.querySelectorAll('.mobile-menu-item').forEach(item => {
+        item.addEventListener('click', () => {
+          closeMenu();
+        });
+      });
+
+      document.addEventListener('click', closeMenu);
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 980) closeMenu();
+      });
+    }
+
     function setupFilterClicks() {
       const filterWrap = document.getElementById('filters');
       const mobileChips = document.querySelectorAll('#mobile-filters .mchip[data-filter]');
@@ -821,6 +890,7 @@
     (async function init() {
       try {
         apps = await fetchApps();
+        setupMobileMenu();
         setupFilterClicks();
         renderGrid();
       } catch (error) {
