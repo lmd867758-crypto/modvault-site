@@ -65,6 +65,7 @@
       letter-spacing: -0.02em;
       font-size: 30px;
       line-height: 1;
+      white-space: nowrap;
     }
 
     .brand img {
@@ -391,16 +392,21 @@
       }
       .topbar {
         grid-template-columns: 1fr auto;
+        grid-template-areas:
+          "brand menu"
+          "search search";
         gap: 8px;
         padding: 10px 12px 8px;
       }
       .brand {
-        font-size: 18px;
-        gap: 6px;
+        grid-area: brand;
+        font-size: 22px;
+        gap: 7px;
       }
-      .brand img { width: 30px; height: 30px; }
+      .brand img { width: 36px; height: 36px; }
       .search-wrap {
-        grid-column: 1 / -1;
+        grid-area: search;
+        grid-column: auto;
         justify-content: stretch;
       }
       .search {
@@ -409,7 +415,11 @@
         font-size: 14px;
       }
       .top-links { display: none; }
-      .mobile-menu { display: inline-flex; }
+      .mobile-menu {
+        grid-area: menu;
+        display: inline-flex;
+        align-self: center;
+      }
       .mobile-strip { display: flex; }
       .layout {
         grid-template-columns: 1fr;
