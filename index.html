@@ -719,15 +719,13 @@
 
       grid.innerHTML = filtered.map((app, idx) => {
         const thumb = app.icon || fallbackThumb(app);
-        const tall = idx % 7 === 0 || idx % 11 === 3;
         const rating = starsFromName(app.name);
         const miniCount = numberFromName(app.name, 43);
         const head = escapeHtml(app.vCategory);
         const title = escapeHtml(app.name);
-        const desc = escapeHtml(app.description || 'Premium ready build.');
 
         return `
-          <a class="card ${tall ? 'tall' : ''}" href="./dl.html?id=${app.id}">
+          <a class="card" href="./dl.html?id=${app.id}">
             <div class="card-head ${headClass(app.vCategory)}">
               <span>${head}</span>
               <span>${app.vCategory === 'Video' ? '▶' : app.vCategory === 'Wallpaper' ? '🖼' : app.vCategory === 'Tools' ? '🛠' : app.vCategory === 'EXE' ? '💻' : app.vCategory === 'Games' ? '🎮' : '▦'}</span>
@@ -741,7 +739,6 @@
                 <span class="text-muted">${escapeHtml(app.platform || 'Android')}</span>
                 <span class="stars">${rating}</span>
               </div>
-              ${tall ? `<div class="text-muted" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:36px;">${desc}</div>` : ''}
               <div class="meta">
                 <span>${miniCount} ${app.vCategory === 'Video' ? 'Plays' : 'Downloads'}</span>
                 ${app.version ? `<span>v${escapeHtml(app.version)}</span>` : `<span>${escapeHtml(app.vCategory)}</span>`}
