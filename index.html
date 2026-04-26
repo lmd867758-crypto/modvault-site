@@ -111,6 +111,76 @@
       color: #111;
     }
 
+    .mobile-menu {
+      display: none;
+      border: 1px solid #d9e2ec;
+      background: #fff;
+      border-radius: 12px;
+      width: 42px;
+      height: 42px;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      line-height: 1;
+      color: #25314b;
+      box-shadow: 0 2px 8px rgba(30, 40, 70, .08);
+    }
+
+    .mobile-strip {
+      display: none;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 0 12px 8px;
+      scrollbar-width: none;
+    }
+
+    .mobile-strip::-webkit-scrollbar { display: none; }
+
+    .mchip {
+      flex-shrink: 0;
+      border: 1px solid #d8e2ec;
+      border-radius: 999px;
+      background: #eaf0f6;
+      color: #1f2a44;
+      font-size: 14px;
+      font-weight: 800;
+      padding: 8px 12px;
+      line-height: 1;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .mchip.active { background: #ffffff; border-color: #8dd8e0; }
+
+    .mchip.creator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+
+    .avatars {
+      font-size: 12px;
+      letter-spacing: -1px;
+    }
+
+    .fab-filter {
+      display: none;
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: 58px;
+      height: 58px;
+      border: none;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 10px 28px rgba(23, 32, 50, .22);
+      font-size: 26px;
+      color: #21304a;
+      z-index: 50;
+      cursor: pointer;
+    }
+
     .layout {
       display: grid;
       grid-template-columns: 160px 1fr;
@@ -312,12 +382,83 @@
     }
 
     @media (max-width: 980px) {
-      .topbar { grid-template-columns: 1fr; gap: 8px; }
-      .layout { grid-template-columns: 1fr; }
-      .sidebar { order: 2; }
-      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .brand { font-size: 26px; }
-      .top-links { justify-content: center; }
+      body { background: #eef3f6; }
+      .page {
+        width: min(470px, calc(100% - 10px));
+        margin: 8px auto;
+        border-radius: 28px;
+        background: #f3f7fa;
+      }
+      .topbar {
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+        padding: 10px 12px 8px;
+      }
+      .brand {
+        font-size: 18px;
+        gap: 6px;
+      }
+      .brand img { width: 30px; height: 30px; }
+      .search-wrap {
+        grid-column: 1 / -1;
+        justify-content: stretch;
+      }
+      .search {
+        width: 100%;
+        height: 44px;
+        font-size: 14px;
+      }
+      .top-links { display: none; }
+      .mobile-menu { display: inline-flex; }
+      .mobile-strip { display: flex; }
+      .layout {
+        grid-template-columns: 1fr;
+        padding: 0 8px 10px;
+      }
+      .sidebar { display: none; }
+      .main {
+        background: transparent;
+        border-radius: 0;
+        padding: 0;
+      }
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .card {
+        border-radius: 14px;
+        min-height: 175px;
+      }
+      .card.tall {
+        min-height: 350px;
+      }
+      .card-head {
+        height: 28px;
+        font-size: 13px;
+      }
+      .card-body {
+        padding: 9px;
+        gap: 7px;
+      }
+      .title {
+        font-size: clamp(14px, 4.6vw, 22px);
+        min-height: 50px;
+      }
+      .meta {
+        font-size: 11px;
+        gap: 6px;
+      }
+      .stars {
+        font-size: 13px;
+        letter-spacing: 0.6px;
+      }
+      .button {
+        width: 92px;
+        height: 34px;
+        font-size: 24px;
+      }
+      .footer { display: none; }
+      .fab-filter { display: inline-flex; align-items: center; justify-content: center; }
     }
   </style>
 </head>
@@ -338,7 +479,19 @@
         <a href="#">My Library</a>
         <a href="#">Sign In</a>
       </nav>
+      <button class="mobile-menu" type="button" aria-label="Open menu">☰</button>
     </header>
+
+    <div id="mobile-filters" class="mobile-strip" aria-label="Mobile quick filters">
+      <button class="mchip active" data-filter="All" type="button">All</button>
+      <button class="mchip" data-filter="Games" type="button">Games</button>
+      <button class="mchip" data-filter="Apps" type="button">Apps</button>
+      <button class="mchip" data-filter="Tools" type="button">Tools</button>
+      <button class="mchip" data-filter="EXE" type="button">EXE</button>
+      <button class="mchip" data-filter="Wallpaper" type="button">Wallpaper</button>
+      <button class="mchip" data-filter="Video" type="button">Video</button>
+      <span class="mchip creator">Featured Creators <span class="avatars">🎮🧑‍🎨🟣</span></span>
+    </div>
 
     <div class="layout">
       <aside class="sidebar">
@@ -391,6 +544,8 @@
       <a href="#">Privacy</a>
     </footer>
   </div>
+
+  <button id="fab-filter" class="fab-filter" type="button" aria-label="Quick filter">⎚</button>
 
   <script src="./config.js"></script>
   <script>
@@ -600,29 +755,51 @@
 
     function setupFilterClicks() {
       const filterWrap = document.getElementById('filters');
+      const mobileChips = document.querySelectorAll('#mobile-filters .mchip[data-filter]');
+
+      const setFilter = (filter) => {
+        activeFilter = filter || 'All';
+
+        filterWrap.querySelectorAll('.item').forEach(flItem => {
+          const d = flItem.querySelector('.dot');
+          if (d) d.classList.remove('active');
+          if (flItem.getAttribute('data-filter') === activeFilter && d) d.classList.add('active');
+        });
+
+        mobileChips.forEach(chip => {
+          chip.classList.toggle('active', chip.getAttribute('data-filter') === activeFilter);
+        });
+
+        renderGrid();
+      };
+
       filterWrap.querySelectorAll('.item[data-filter]').forEach(item => {
         item.addEventListener('click', () => {
-          activeFilter = item.getAttribute('data-filter') || 'All';
-          filterWrap.querySelectorAll('.dot').forEach(dot => dot.classList.remove('active'));
-          const dot = item.querySelector('.dot');
-          if (dot) dot.classList.add('active');
-          renderGrid();
+          setFilter(item.getAttribute('data-filter'));
         });
       });
 
       document.querySelectorAll('.sidebar .group .item[data-filter]').forEach(item => {
         item.addEventListener('click', () => {
-          const filter = item.getAttribute('data-filter');
-          if (!filter) return;
-          activeFilter = filter;
-          filterWrap.querySelectorAll('.item').forEach(flItem => {
-            const d = flItem.querySelector('.dot');
-            if (d) d.classList.remove('active');
-            if (flItem.getAttribute('data-filter') === filter && d) d.classList.add('active');
-          });
-          renderGrid();
+          setFilter(item.getAttribute('data-filter'));
         });
       });
+
+      mobileChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          setFilter(chip.getAttribute('data-filter'));
+        });
+      });
+
+      const fab = document.getElementById('fab-filter');
+      if (fab) {
+        fab.addEventListener('click', () => {
+          const list = ['All', 'Games', 'Apps', 'Tools', 'EXE', 'Wallpaper', 'Video'];
+          const current = list.indexOf(activeFilter);
+          const next = list[(current + 1) % list.length];
+          setFilter(next);
+        });
+      }
     }
 
     document.getElementById('search').addEventListener('input', renderGrid);
