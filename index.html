@@ -391,11 +391,12 @@
         background: #f3f7fa;
       }
       .topbar {
-        grid-template-columns: 1fr auto;
+        grid-template-columns: 1fr 48px;
         grid-template-areas:
           "brand menu"
           "search search";
-        gap: 8px;
+        column-gap: 8px;
+        row-gap: 8px;
         padding: 10px 12px 8px;
       }
       .brand {
@@ -406,13 +407,17 @@
       .brand img { width: 42px; height: 42px; }
       .search-wrap {
         grid-area: search;
-        grid-column: auto;
-        justify-content: stretch;
+        grid-column: 1 / -1;
+        display: block;
         width: 100%;
+        margin: 0;
+        padding: 0;
       }
       .search {
-        width: 100%;
-        max-width: none;
+        display: block;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0;
         height: 46px;
         font-size: 14px;
       }
