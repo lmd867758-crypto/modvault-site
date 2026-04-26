@@ -269,6 +269,13 @@
     const BRAND = window.APP_CONFIG?.BRAND || "ModVault";
     const COPYRIGHT = window.APP_CONFIG?.COPYRIGHT || "© 2026 ModVault";
     const GLOBAL_SMART_LINK = "https://www.profitablecpmratenetwork.com/th4iq4cz?key=da8ba8716ee7c214e9decd3ec3f0f3dd";
+    const CATEGORY_ICON_MAP = {
+      Games: "https://i.ibb.co.com/wZSSNgXp/controller.jpg",
+      Apps: "https://i.ibb.co.com/zt2T8F3/apk.jpg",
+      Tools: "https://i.ibb.co.com/8L0MLqq7/strategy-game.jpg",
+      Wallpaper: "https://i.ibb.co.com/sJRDjTqr/images-2.png",
+      Video: "https://i.ibb.co.com/BHQn6pCj/play.jpg"
+    };
 
     document.getElementById("brandName").textContent = BRAND;
     document.getElementById("copyright").textContent = COPYRIGHT;
@@ -288,6 +295,48 @@
       return fallback;
     }
 
+    function escapeHtml(str = "") {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function canonicalCategory(raw, strict = false) {
+      const v = String(raw || "").trim().toLowerCase();
+      if (!v) return strict ? "" : "Apps";
+
+      if (["game", "games", "gaming"].includes(v)) return "Games";
+      if (["app", "apps", "application", "applications"].includes(v)) return "Apps";
+      if (["tool", "tools", "utility", "utilities"].includes(v)) return "Tools";
+      if (["wallpaper", "wallpapers", "theme", "themes"].includes(v)) return "Wallpaper";
+      if (["video", "videos", "movie", "movies"].includes(v)) return "Video";
+
+      return strict ? "" : "Apps";
+    }
+
+    function inferCategory(rawCategory, features = "") {
+      const fromCategory = canonicalCategory(rawCategory, true);
+      if (fromCategory) return fromCategory;
+
+      const fromFeature = String(features)
+        .split(",")
+        .map(v => canonicalCategory(v.trim(), true))
+        .find(Boolean);
+
+      return fromFeature || "Apps";
+    }
+
+    function getCategoryIcon(category) {
+      return CATEGORY_ICON_MAP[category] || CATEGORY_ICON_MAP.Apps;
+    }
+
+    function isLikelyImageUrl(url = "") {
+      return /\.(png|jpe?g|webp|gif|svg|avif)(\?|#|$)/i.test(String(url).trim());
+    }
+
     async function fetchApp(id) {
       if (!SHEET_ID || SHEET_ID === "PASTE_YOUR_SHEET_ID_HERE") {
         throw new Error("Sheet ID missing in config.js");
@@ -301,15 +350,23 @@
 
       if (!row) return null;
 
+      const features = normalize(row.c[7], "");
+      const categoryRaw = normalize(row.c[8], "");
+      const category = inferCategory(categoryRaw, features);
+      const rawIcon = normalize(row.c[2], "");
+      const safeIcon = isLikelyImageUrl(rawIcon) ? rawIcon : "";
+
       return {
         name: normalize(row.c[0], "App"),
         description: normalize(row.c[1], ""),
-        icon: normalize(row.c[2], ""),
+        icon: safeIcon,
         version: normalize(row.c[3], ""),
         platform: normalize(row.c[4], ""),
         downloadUrl: normalize(row.c[5], ""),
         smartLink: normalize(row.c[6], ""),
-        features: normalize(row.c[7], "")
+        features,
+        category,
+        categoryIcon: getCategoryIcon(category)
       };
     }
 
@@ -341,14 +398,30 @@
       document.title = `${app.name} - ${BRAND}`;
 
       const iconEl = document.getElementById("app-icon");
-      iconEl.innerHTML = app.icon
-        ? `<img src="${app.icon}" alt="${app.name}" onerror="this.style.display='none'"/>`
-        : `<span class="material-symbols-outlined" style="font-size:48px;color:#636565">android</span>`;
+      iconEl.innerHTML = "";
+
+      const img = document.createElement("img");
+      img.alt = app.name;
+      let fallbackTried = false;
+
+      img.onerror = () => {
+        if (!fallbackTried && app.categoryIcon && img.src !== app.categoryIcon) {
+          fallbackTried = true;
+          img.src = app.categoryIcon;
+          return;
+        }
+
+        iconEl.innerHTML = `<span class="material-symbols-outlined" style="font-size:48px;color:#636565">android</span>`;
+      };
+
+      img.src = app.icon || app.categoryIcon;
+      iconEl.appendChild(img);
 
       document.getElementById("app-name").textContent = app.name;
       document.getElementById("app-desc").textContent = app.description;
 
       const parts = [];
+      if (app.category) parts.push(app.category);
       if (app.version) parts.push("v" + app.version);
       if (app.platform) parts.push(app.platform);
       document.getElementById("app-meta").textContent = parts.join(" · ");
@@ -363,7 +436,7 @@
 
       if (app.features) {
         const chips = app.features.split(",").map(f => f.trim()).filter(Boolean);
-        document.getElementById("feature-chips").innerHTML = chips.map(f => `<span class="chip">${f}</span>`).join("");
+        document.getElementById("feature-chips").innerHTML = chips.map(f => `<span class="chip">${escapeHtml(f)}</span>`).join("");
       }
 
       if (appSmartLink) {
