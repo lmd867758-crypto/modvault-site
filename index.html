@@ -3,250 +3,349 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ModVault</title>
+  <title>GridX Core</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Manrope', sans-serif;
-      background: #141313;
-      color: #e5e2e1;
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
+    :root {
+      --bg: #f8f9fc;
+      --surface: #ffffff;
+      --ink: #1A1B35;
+      --muted: #59607a;
+      --line: #1A1B35;
+      --pastel-blue: #dcecff;
+      --pastel-orange: #ffe8d6;
+      --pastel-yellow: #fff4bf;
+      --pastel-mint: #dbf7ec;
+      --pastel-lav: #ece3ff;
     }
 
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(10,10,10,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
     }
-    .nav-inner {
-      max-width: 860px;
+
+    .page {
+      width: min(1160px, 100% - 24px);
       margin: 0 auto;
-      padding: 14px 16px;
+      padding: 14px 0 38px;
+    }
+
+    .nav {
+      position: sticky;
+      top: 10px;
+      z-index: 60;
+      background: #ffffffcc;
+      border: 3px solid var(--line);
+      border-radius: 22px;
+      backdrop-filter: blur(8px);
+      padding: 12px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-bottom: 14px;
     }
-    .brand { color: #fff; font-weight: 700; letter-spacing: -0.02em; font-size: 18px; }
-    .muted { color: #8e9192; font-size: 13px; }
 
-    main {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 16px 16px 36px;
+    .brand {
+      font-weight: 800;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .tag {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      background: var(--pastel-lav);
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      white-space: nowrap;
     }
 
     .hero {
+      border: 3px solid var(--line);
+      border-radius: 26px;
+      padding: 18px;
+      background: linear-gradient(135deg, #ffffff 0%, #eef2ff 100%);
       margin-bottom: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+      display: grid;
+      gap: 14px;
     }
-    .hero h1 { font-size: clamp(22px, 4vw, 30px); color: #fff; letter-spacing: -0.03em; }
-    .hero p { color: #9ca1a3; font-size: 13px; line-height: 1.6; }
 
-    .search-wrap { margin: 12px 0 14px; }
+    .hero h1 {
+      font-size: clamp(24px, 5vw, 42px);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 70ch;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      background: white;
+    }
+
+    .pill.blue { background: var(--pastel-blue); }
+    .pill.orange { background: var(--pastel-orange); }
+    .pill.yellow { background: var(--pastel-yellow); }
+
     .search {
       width: 100%;
-      background: #201f1f;
-      border: 1px solid rgba(255,255,255,0.1);
-      color: #e5e2e1;
+      border: 3px solid var(--line);
+      border-radius: 16px;
       padding: 12px 14px;
-      border-radius: 12px;
-      font-size: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      background: #fff;
+      color: var(--ink);
       outline: none;
     }
-    .search:focus { border-color: rgba(255,255,255,0.24); }
+
+    .search::placeholder { color: #7e86a6; }
+
+    .showcase {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .showcase-card {
+      border: 3px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 96px;
+    }
+
+    .showcase-card b { font-size: 14px; }
+    .showcase-card span { font-size: 12px; color: var(--muted); }
+
+    .showcase-card:nth-child(1) { background: var(--pastel-blue); }
+    .showcase-card:nth-child(2) { background: var(--pastel-orange); }
+    .showcase-card:nth-child(3) { background: var(--pastel-mint); }
+    .showcase-card:nth-child(4) { background: var(--pastel-lav); }
 
     .category-strip {
       display: flex;
-      gap: 8px;
       overflow-x: auto;
-      padding: 2px 2px 8px;
-      scroll-snap-type: x proximity;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin;
-      margin-bottom: 14px;
-    }
-    .category-strip::-webkit-scrollbar { height: 6px; }
-    .category-strip::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.2);
-      border-radius: 999px;
+      gap: 8px;
+      padding: 4px 2px 8px;
+      margin: 8px 0 6px;
     }
 
+    .category-strip::-webkit-scrollbar { height: 6px; }
+    .category-strip::-webkit-scrollbar-thumb { background: #c7cce7; border-radius: 999px; }
+
     .cat-btn {
-      border: 1px solid rgba(255,255,255,0.1);
-      background: #201f1f;
-      color: #c9cccd;
-      font-size: 12px;
-      font-weight: 700;
+      border: 3px solid var(--line);
       border-radius: 999px;
       padding: 6px 12px 6px 6px;
-      white-space: nowrap;
-      cursor: pointer;
-      scroll-snap-align: start;
-      transition: all .2s ease;
+      background: #fff;
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 800;
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform .15s ease;
     }
+
+    .cat-btn:hover { transform: translateY(-1px); }
+    .cat-btn.active { background: var(--pastel-yellow); }
+
     .cat-thumb {
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
       border-radius: 999px;
       object-fit: cover;
-      border: 1px solid rgba(255,255,255,0.18);
-      background: #2a2a2a;
-      display: block;
-      flex-shrink: 0;
-    }
-    .cat-label { line-height: 1; }
-    .cat-btn.active {
+      border: 2px solid var(--line);
       background: #fff;
-      color: #111;
-      border-color: #fff;
-    }
-    .cat-btn.active .cat-thumb {
-      border-color: rgba(17,17,17,0.2);
+      flex-shrink: 0;
     }
 
     .section-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 6px 2px 12px;
-    }
-    .section-head h2 {
-      font-size: 16px;
-      color: #fff;
-      letter-spacing: -0.01em;
-    }
-    .section-head .count {
-      color: #85898b;
-      font-size: 12px;
-    }
-
-    .app-list {
-      display: flex;
-      flex-direction: column;
+      margin: 10px 2px 10px;
       gap: 10px;
     }
 
-    .app-row {
+    .section-head h2 {
+      font-size: 18px;
+      letter-spacing: -0.02em;
+    }
+
+    .count {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--muted);
+      border: 2px solid var(--line);
+      background: #fff;
+      border-radius: 999px;
+      padding: 6px 10px;
+      white-space: nowrap;
+    }
+
+    .status {
+      border: 3px dashed var(--line);
+      border-radius: 18px;
+      background: #fff;
+      padding: 24px 14px;
+      text-align: center;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .app-grid {
       display: grid;
-      grid-template-columns: 56px 1fr auto;
       gap: 12px;
-      align-items: center;
+      grid-template-columns: 1fr;
+    }
+
+    .app-card {
+      border: 3px solid var(--line);
+      border-radius: 20px;
+      background: #fff;
+      padding: 12px;
       text-decoration: none;
       color: inherit;
-      background: #1a1919;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 14px;
-      padding: 10px;
-      transition: transform .16s ease, border-color .2s ease;
-    }
-    .app-row:hover {
-      transform: translateY(-1px);
-      border-color: rgba(255,255,255,0.2);
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 12px;
+      transition: transform .16s ease;
     }
 
-    .mini-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 14px;
+    .app-card:hover { transform: translateY(-2px); }
+
+    .app-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      border: 3px solid var(--line);
       object-fit: cover;
-      background: #242323;
-      border: 1px solid rgba(255,255,255,0.08);
-      display: block;
-      flex-shrink: 0;
+      background: #fff;
     }
 
-    .app-copy {
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .title {
-      color: #fff;
+    .app-copy { min-width: 0; }
+
+    .app-title {
+      font-weight: 800;
       font-size: 15px;
-      font-weight: 700;
+      margin-bottom: 4px;
       line-height: 1.25;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .desc {
-      color: #9aa0a2;
+
+    .app-desc {
+      color: var(--muted);
       font-size: 12px;
-      line-height: 1.35;
+      line-height: 1.45;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      margin-bottom: 8px;
+      min-height: 34px;
     }
-    .meta {
-      color: #727778;
-      font-size: 11px;
+
+    .app-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .badge {
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 10px;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      letter-spacing: .05em;
+      background: #fff;
     }
 
-    .go {
-      color: #7c8182;
-      font-size: 22px;
-      line-height: 1;
-      padding: 0 2px;
-    }
-
-    .status {
-      text-align: center;
-      color: #8e9192;
-      font-size: 14px;
-      padding: 28px 12px;
-      border: 1px dashed rgba(255,255,255,0.12);
-      border-radius: 14px;
-      background: #191818;
-    }
+    .b1 { background: var(--pastel-blue); }
+    .b2 { background: var(--pastel-mint); }
+    .b3 { background: var(--pastel-lav); }
 
     footer {
-      border-top: 1px solid rgba(255,255,255,0.06);
-      margin-top: 28px;
-      padding: 18px 12px;
       text-align: center;
-      color: #5b5f61;
+      color: #6f7690;
       font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      font-weight: 700;
+      margin-top: 20px;
+    }
+
+    @media (min-width: 760px) {
+      .hero { padding: 24px; }
+      .showcase { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .app-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (min-width: 1080px) {
+      .app-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
   </style>
 </head>
 <body>
-  <nav>
-    <div class="nav-inner">
-      <div class="brand" id="brand">ModVault</div>
-      <div class="muted">Mod APK Library</div>
-    </div>
-  </nav>
+  <div class="page">
+    <header class="nav">
+      <div class="brand" id="brand">GridX Core</div>
+      <div class="tag">Premium APK Hub</div>
+    </header>
 
-  <main>
     <section class="hero">
-      <h1>Find apps by category</h1>
-      <p>Play Store style mini-icon list with swipe categories at the top.</p>
-    </section>
+      <div>
+        <h1>Unlimited Fun, Premium Mods.</h1>
+        <p>Modern mobile-first experience for discovering trending games, modded apps, and useful tools — fast, clean, and user-friendly.</p>
+      </div>
 
-    <div class="search-wrap">
-      <input id="search" class="search" placeholder="Search app name..." />
-    </div>
+      <div class="hero-badges">
+        <span class="pill blue">🔥 Epic Mod</span>
+        <span class="pill orange">⚡ Instant Access</span>
+        <span class="pill yellow">🎮 Unlimited Fun</span>
+      </div>
+
+      <div class="showcase" aria-label="Category cards">
+        <div class="showcase-card"><b>Action Games</b><span>Fast-paced battles & PvP picks</span></div>
+        <div class="showcase-card"><b>Emulators</b><span>Retro and console-like gameplay</span></div>
+        <div class="showcase-card"><b>Media</b><span>Video, streaming, and player tools</span></div>
+        <div class="showcase-card"><b>APKs</b><span>Curated mods and utilities</span></div>
+      </div>
+
+      <input id="search" class="search" placeholder="Search app, game, or feature..." />
+    </section>
 
     <div id="category-strip" class="category-strip" style="display:none"></div>
 
@@ -257,17 +356,17 @@
         <h2 id="section-title">All Apps</h2>
         <span id="result-count" class="count">0 apps</span>
       </div>
-      <div id="app-list" class="app-list"></div>
+      <div id="app-list" class="app-grid"></div>
     </section>
-  </main>
 
-  <footer id="copyright">© 2026 ModVault</footer>
+    <footer id="copyright">© 2026 GridX Core</footer>
+  </div>
 
   <script src="./config.js"></script>
   <script>
-    const BRAND = window.APP_CONFIG?.BRAND || "ModVault";
+    const BRAND = window.APP_CONFIG?.BRAND || "GridX Core";
     const SHEET_ID = window.APP_CONFIG?.SHEET_ID || "";
-    const COPYRIGHT = window.APP_CONFIG?.COPYRIGHT || "© 2026 ModVault";
+    const COPYRIGHT = window.APP_CONFIG?.COPYRIGHT || "© 2026 GridX Core";
 
     const CATEGORY_ICON_MAP = {
       Games: "https://i.ibb.co.com/wZSSNgXp/controller.jpg",
@@ -287,6 +386,8 @@
     let activeCategory = "All";
 
     function parseGvizJson(text) {
+      const match = text.match(/google\.visualization\.Query\.setResponse\((.*)\);?\s*$/s);
+      if (match && match[1]) return JSON.parse(match[1]);
       return JSON.parse(text.substring(47).slice(0, -2));
     }
 
@@ -309,13 +410,11 @@
     function canonicalCategory(raw, strict = false) {
       const v = String(raw || "").trim().toLowerCase();
       if (!v) return strict ? "" : "Apps";
-
-      if (["game", "games", "gaming"].includes(v)) return "Games";
-      if (["app", "apps", "application", "applications"].includes(v)) return "Apps";
-      if (["tool", "tools", "utility", "utilities"].includes(v)) return "Tools";
+      if (["game", "games", "gaming", "action games"].includes(v)) return "Games";
+      if (["app", "apps", "application", "applications", "apk", "apks"].includes(v)) return "Apps";
+      if (["tool", "tools", "utility", "utilities", "emulator", "emulators"].includes(v)) return "Tools";
       if (["wallpaper", "wallpapers", "theme", "themes"].includes(v)) return "Wallpaper";
-      if (["video", "videos", "movie", "movies"].includes(v)) return "Video";
-
+      if (["video", "videos", "movie", "movies", "media"].includes(v)) return "Video";
       return strict ? "" : "Apps";
     }
 
@@ -327,9 +426,8 @@
         .split(",")
         .map(v => canonicalCategory(v.trim(), true))
         .find(Boolean);
-      if (fromFeature) return fromFeature;
 
-      return "Apps";
+      return fromFeature || "Apps";
     }
 
     function getCategoryIcon(category) {
@@ -350,16 +448,45 @@
       const text = await res.text();
       const json = parseGvizJson(text);
 
+      const cols = json.table.cols || [];
+      const colMap = {};
+      cols.forEach((c, i) => {
+        const k = String(c?.label || c?.id || "").trim().toLowerCase();
+        if (k) colMap[k] = i;
+      });
+
+      const getIdx = (...keys) => {
+        for (const key of keys) {
+          const k = String(key).toLowerCase();
+          if (Object.prototype.hasOwnProperty.call(colMap, k)) return colMap[k];
+        }
+        return -1;
+      };
+
+      const IDX = {
+        name: getIdx("name"),
+        description: getIdx("description"),
+        icon: getIdx("icon"),
+        version: getIdx("version"),
+        platform: getIdx("platform"),
+        downloadUrl: getIdx("downloadurl", "download url", "download"),
+        smartLink: getIdx("smartlink", "smart link"),
+        features: getIdx("features"),
+        category: getIdx("category")
+      };
+
+      const read = (row, idx, fallback = "") => idx >= 0 ? normalize(row.c[idx], fallback) : fallback;
+
       return (json.table.rows || []).map((r, index) => {
-        const name = normalize(r.c[0], "App");
-        const description = normalize(r.c[1], "");
-        const icon = normalize(r.c[2], "");
-        const version = normalize(r.c[3], "");
-        const platform = normalize(r.c[4], "");
-        const downloadUrl = normalize(r.c[5], "");
-        const smartLink = normalize(r.c[6], "");
-        const features = normalize(r.c[7], "");
-        const categoryRaw = normalize(r.c[8], "");
+        const name = read(r, IDX.name, "App");
+        const description = read(r, IDX.description, "");
+        const icon = read(r, IDX.icon, "");
+        const version = read(r, IDX.version, "");
+        const platform = read(r, IDX.platform, "");
+        const downloadUrl = read(r, IDX.downloadUrl, "");
+        const smartLink = read(r, IDX.smartLink, "");
+        const features = read(r, IDX.features, "");
+        const categoryRaw = read(r, IDX.category, "");
         const category = inferCategory(categoryRaw, features);
         const categoryIcon = getCategoryIcon(category);
         const safeIcon = isLikelyImageUrl(icon) ? icon : "";
@@ -379,16 +506,6 @@
           displayIcon: safeIcon || categoryIcon
         };
       }).filter(a => a.name.trim() !== "");
-    }
-
-    function bindHorizontalWheel() {
-      const strip = document.getElementById("category-strip");
-      strip.addEventListener("wheel", (e) => {
-        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-          strip.scrollLeft += e.deltaY;
-          e.preventDefault();
-        }
-      }, { passive: false });
     }
 
     function setupImageFallbacks() {
@@ -426,11 +543,11 @@
       strip.innerHTML = categories.map(cat => {
         const thumb = getCategoryIcon(cat === "All" ? "Apps" : cat);
         return `
-        <button class="cat-btn ${cat === activeCategory ? "active" : ""}" data-category="${escapeHtml(cat)}">
-          <img class="cat-thumb" src="${escapeHtml(thumb)}" alt="${escapeHtml(cat)}" data-fallback="${escapeHtml(CATEGORY_ICON_MAP.Apps)}" />
-          <span class="cat-label">${escapeHtml(cat)}</span>
-        </button>
-      `;
+          <button class="cat-btn ${cat === activeCategory ? "active" : ""}" data-category="${escapeHtml(cat)}">
+            <img class="cat-thumb" src="${escapeHtml(thumb)}" alt="${escapeHtml(cat)}" data-fallback="${escapeHtml(CATEGORY_ICON_MAP.Apps)}" />
+            <span>${escapeHtml(cat)}</span>
+          </button>
+        `;
       }).join("");
 
       strip.style.display = "flex";
@@ -444,19 +561,18 @@
     }
 
     function cardHtml(app) {
-      const metaParts = [app.category, app.version ? `v${app.version}` : "", app.platform]
-        .filter(Boolean)
-        .join(" · ");
-
       return `
-        <a class="app-row" href="./dl.html?id=${app.id}">
-          <img class="mini-icon" src="${escapeHtml(app.displayIcon)}" alt="${escapeHtml(app.name)}" data-fallback="${escapeHtml(app.categoryIcon)}" />
+        <a class="app-card" href="./dl.html?id=${app.id}">
+          <img class="app-icon" src="${escapeHtml(app.displayIcon)}" alt="${escapeHtml(app.name)}" data-fallback="${escapeHtml(app.categoryIcon)}" />
           <div class="app-copy">
-            <div class="title">${escapeHtml(app.name)}</div>
-            <div class="desc">${escapeHtml(app.description || "No description")}</div>
-            <div class="meta">${escapeHtml(metaParts)}</div>
+            <div class="app-title">${escapeHtml(app.name)}</div>
+            <div class="app-desc">${escapeHtml(app.description || "No description")}</div>
+            <div class="app-meta">
+              <span class="badge b1">${escapeHtml(app.category)}</span>
+              ${app.version ? `<span class="badge b2">v${escapeHtml(app.version)}</span>` : ""}
+              ${app.platform ? `<span class="badge b3">${escapeHtml(app.platform)}</span>` : ""}
+            </div>
           </div>
-          <div class="go">›</div>
         </a>
       `;
     }
@@ -471,7 +587,6 @@
           a.description.toLowerCase().includes(q) ||
           a.features.toLowerCase().includes(q) ||
           a.category.toLowerCase().includes(q);
-
         return categoryOk && textOk;
       });
 
@@ -486,7 +601,6 @@
         status.textContent = "No apps found for this category/search.";
       } else {
         listEl.innerHTML = filtered.map(cardHtml).join("");
-
         status.style.display = "none";
         wrap.style.display = "block";
         document.getElementById("section-title").textContent = activeCategory === "All" ? "All Apps" : `${activeCategory} Apps`;
@@ -504,7 +618,6 @@
 
     (async function init() {
       try {
-        bindHorizontalWheel();
         apps = await fetchApps();
         setupSearch();
         renderFiltered();

@@ -3,272 +3,240 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Loading...</title>
+  <title>GridX Core</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: #141313;
-      color: #e5e2e1;
-      font-family: 'Manrope', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      -webkit-font-smoothing: antialiased;
-    }
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    :root {
+      --bg: #f8f9fc;
+      --surface: #fff;
+      --ink: #1A1B35;
+      --muted: #5b6280;
+      --line: #1A1B35;
+      --pastel-blue: #dcecff;
+      --pastel-orange: #ffe8d6;
+      --pastel-yellow: #fff4bf;
+      --pastel-mint: #dbf7ec;
+      --pastel-lav: #ece3ff;
     }
 
-    nav {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 50;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      padding: 0 16px;
-      background: rgba(10,10,10,0.85);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
-    .nav-inner {
-      width: 100%;
-      max-width: 600px;
+
+    .page {
+      width: min(980px, 100% - 24px);
       margin: 0 auto;
+      padding: 14px 0 30px;
+    }
+
+    .nav {
+      position: sticky;
+      top: 10px;
+      z-index: 40;
+      border: 3px solid var(--line);
+      border-radius: 20px;
+      background: #ffffffd6;
+      backdrop-filter: blur(8px);
+      padding: 10px 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-bottom: 14px;
     }
-    .nav-logo {
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      color: #fff;
+
+    .brand {
       text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .nav-back {
-      font-size: 13px;
-      font-weight: 500;
-      color: #8e9192;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      transition: color 0.2s;
-    }
-    .nav-back:hover { color: #fff; }
-    .nav-back .material-symbols-outlined { font-size: 16px; }
-
-    main {
-      width: 100%;
-      max-width: 600px;
-      padding: 76px 16px 60px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-      flex-grow: 1;
-    }
-
-    .app-detail {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-      text-align: center;
-    }
-
-    .app-icon {
-      width: 100px;
-      height: 100px;
-      border-radius: 24px;
-      overflow: hidden;
-      background: #201f1f;
-      border: 1px solid rgba(255,255,255,0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-    }
-    .app-icon img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .app-name {
-      font-size: clamp(22px, 6vw, 32px);
-      font-weight: 700;
+      color: var(--ink);
+      font-weight: 800;
       letter-spacing: -0.02em;
-      color: #fff;
-      line-height: 1.2;
-      word-break: break-word;
-    }
-    .app-desc {
-      font-size: 14px;
-      color: #8e9192;
-      line-height: 1.6;
-      max-width: 440px;
-      padding: 0 8px;
-    }
-    .app-meta {
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #636565;
+      font-size: 18px;
     }
 
-    .download-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      background: #fff;
-      color: #141313;
-      font-size: 15px;
-      font-weight: 700;
-      padding: 0 32px;
-      height: 52px;
+    .back {
+      text-decoration: none;
+      border: 2px solid var(--line);
       border-radius: 999px;
-      transition: background 0.2s, transform 0.15s;
-      letter-spacing: -0.01em;
-      width: 100%;
-      max-width: 320px;
-      cursor: pointer;
-      border: none;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--ink);
+      background: #fff;
     }
-    .download-btn:hover { background: #e3e2e2; transform: translateY(-1px); }
-    .download-btn:active { transform: translateY(0); }
-    .download-btn.disabled { opacity: 0.4; pointer-events: none; }
-    .download-btn .material-symbols-outlined { font-size: 20px; }
 
-    .smartlink-hint {
-      font-size: 14px;
-      color: #ffffff;
-      font-weight: 600;
-      line-height: 1.45;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      text-align: center;
-      max-width: 360px;
+    .shell {
+      border: 3px solid var(--line);
+      border-radius: 24px;
+      background: linear-gradient(140deg, #fff 0%, #eef2ff 100%);
+      padding: 18px;
+      display: grid;
+      gap: 16px;
     }
-    .smartlink-hint .material-symbols-outlined { font-size: 18px; color: #ffffff; }
+
+    .head {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .icon {
+      width: 90px;
+      height: 90px;
+      border-radius: 20px;
+      border: 3px solid var(--line);
+      background: #fff;
+      object-fit: cover;
+    }
+
+    .title {
+      font-size: clamp(24px, 6vw, 36px);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+
+    .desc {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
 
     .chips {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
       gap: 8px;
-      padding: 0 8px;
     }
+
     .chip {
-      background: #201f1f;
-      border: 1px solid rgba(255,255,255,0.08);
-      color: #c4c7c8;
-      font-size: 12px;
-      font-weight: 500;
-      padding: 6px 14px;
+      border: 2px solid var(--line);
       border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      background: #fff;
     }
 
-    .divider { width: 100%; height: 1px; background: rgba(255,255,255,0.05); }
+    .chip.c1 { background: var(--pastel-blue); }
+    .chip.c2 { background: var(--pastel-mint); }
+    .chip.c3 { background: var(--pastel-lav); }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .cta-wrap {
+      border: 3px solid var(--line);
+      background: #fff;
+      border-radius: 18px;
+      padding: 14px;
+      display: grid;
+      gap: 12px;
     }
-    #content { animation: fadeIn 0.3s ease forwards; }
 
-    @keyframes pulse-soft { 0%,100%{opacity:1} 50%{opacity:.4} }
-    .skeleton { animation: pulse-soft 1.8s ease-in-out infinite; background: #2a2a2a; border-radius: 8px; }
+    .download-btn {
+      height: 54px;
+      border: 3px solid var(--line);
+      border-radius: 999px;
+      background: var(--pastel-yellow);
+      color: var(--ink);
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .download-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    .hint {
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: var(--pastel-orange);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .status {
+      border: 3px dashed var(--line);
+      border-radius: 16px;
+      background: #fff;
+      padding: 22px 14px;
+      text-align: center;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .skeleton {
+      height: 14px;
+      border-radius: 7px;
+      background: #e4e8f8;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.45} }
 
     footer {
-      width: 100%;
-      padding: 18px 16px;
-      background: #0a0a0a;
-      border-top: 1px solid rgba(255,255,255,0.05);
       text-align: center;
-      margin-top: auto;
+      font-size: 11px;
+      color: #6f7690;
+      font-weight: 700;
+      margin-top: 16px;
     }
-    footer p {
-      font-size: 10px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: #3a3a3a;
+
+    @media (min-width: 860px) {
+      .shell { padding: 24px; }
+      .head { grid-template-columns: 120px 1fr; gap: 18px; }
+      .icon { width: 120px; height: 120px; border-radius: 24px; }
+      .cta-wrap { max-width: 560px; }
     }
   </style>
 </head>
 <body>
-  <nav>
-    <div class="nav-inner">
-      <a class="nav-logo" id="brandLink" href="index.html">
-        <span class="material-symbols-outlined" style="font-size:18px;font-variation-settings:'FILL' 1;">verified</span>
-        <span id="brandName">ModVault</span>
-      </a>
-      <a class="nav-back" href="index.html">
-        <span class="material-symbols-outlined">arrow_back</span>
-        Back
-      </a>
-    </div>
-  </nav>
+  <div class="page">
+    <header class="nav">
+      <a class="brand" id="brandLink" href="index.html">GridX Core</a>
+      <a class="back" href="index.html">← Back</a>
+    </header>
 
-  <main>
-    <div id="loading" class="app-detail">
-      <div class="skeleton" style="width:100px;height:100px;border-radius:24px;"></div>
-      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;">
-        <div class="skeleton" style="height:28px;width:160px;border-radius:6px;"></div>
-        <div class="skeleton" style="height:13px;width:260px;border-radius:4px;"></div>
-        <div class="skeleton" style="height:13px;width:200px;border-radius:4px;"></div>
-      </div>
-      <div class="skeleton" style="height:52px;width:220px;border-radius:999px;"></div>
+    <div id="loading" class="status">
+      <div class="skeleton" style="width:72%;margin:0 auto 10px;"></div>
+      <div class="skeleton" style="width:56%;margin:0 auto 10px;"></div>
+      <div class="skeleton" style="width:36%;margin:0 auto;"></div>
     </div>
 
-    <div id="content" class="app-detail" style="display:none;">
-      <div id="app-icon" class="app-icon"></div>
+    <main id="content" class="shell" style="display:none;">
+      <section class="head">
+        <img id="app-icon" class="icon" alt="App icon" />
+        <div>
+          <h1 id="app-name" class="title"></h1>
+          <p id="app-desc" class="desc"></p>
+        </div>
+      </section>
 
-      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
-        <h1 id="app-name" class="app-name"></h1>
-        <p id="app-desc" class="app-desc"></p>
-      </div>
+      <section id="feature-chips" class="chips"></section>
 
-      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;">
-        <button id="download-btn" class="download-btn">
-          <span class="material-symbols-outlined">download</span>
-          <span id="btn-text">Download Now</span>
-        </button>
-        <span id="app-meta" class="app-meta"></span>
-        <span id="smartlink-hint" class="smartlink-hint" style="display:none;">
-          <span class="material-symbols-outlined">touch_app</span>
-          <span id="hint-text">Step 1: First tap opens smart link. Come back and tap again for download.</span>
-        </span>
-      </div>
+      <section class="cta-wrap">
+        <button id="download-btn" class="download-btn">Step 1: Open Smart Link</button>
+        <div id="smartlink-hint" class="hint">Tap once for smart link. Come back and tap again for direct download.</div>
+      </section>
+    </main>
 
-      <div id="feature-chips" class="chips"></div>
-      <div class="divider"></div>
-    </div>
-  </main>
-
-  <footer><p id="copyright">© 2026 ModVault</p></footer>
+    <footer id="copyright">© 2026 GridX Core</footer>
+  </div>
 
   <script src="./config.js"></script>
   <script>
     const SHEET_ID = window.APP_CONFIG?.SHEET_ID || "";
-    const BRAND = window.APP_CONFIG?.BRAND || "ModVault";
-    const COPYRIGHT = window.APP_CONFIG?.COPYRIGHT || "© 2026 ModVault";
+    const BRAND = window.APP_CONFIG?.BRAND || "GridX Core";
+    const COPYRIGHT = window.APP_CONFIG?.COPYRIGHT || "© 2026 GridX Core";
     const GLOBAL_SMART_LINK = "https://www.profitablecpmratenetwork.com/th4iq4cz?key=da8ba8716ee7c214e9decd3ec3f0f3dd";
+
     const CATEGORY_ICON_MAP = {
       Games: "https://i.ibb.co.com/wZSSNgXp/controller.jpg",
       Apps: "https://i.ibb.co.com/zt2T8F3/apk.jpg",
@@ -277,12 +245,11 @@
       Video: "https://i.ibb.co.com/BHQn6pCj/play.jpg"
     };
 
-    document.getElementById("brandName").textContent = BRAND;
+    document.getElementById("brandLink").textContent = BRAND;
     document.getElementById("copyright").textContent = COPYRIGHT;
 
     let clickedOnce = false;
     let appDownloadUrl = "";
-    let appSmartLink = "";
 
     function getAppId() {
       return parseInt(new URLSearchParams(window.location.search).get("id")) || 1;
@@ -304,16 +271,20 @@
         .replace(/'/g, "&#39;");
     }
 
+    function parseGvizJson(text) {
+      const match = text.match(/google\.visualization\.Query\.setResponse\((.*)\);?\s*$/s);
+      if (match && match[1]) return JSON.parse(match[1]);
+      return JSON.parse(text.substring(47).slice(0, -2));
+    }
+
     function canonicalCategory(raw, strict = false) {
       const v = String(raw || "").trim().toLowerCase();
       if (!v) return strict ? "" : "Apps";
-
-      if (["game", "games", "gaming"].includes(v)) return "Games";
-      if (["app", "apps", "application", "applications"].includes(v)) return "Apps";
-      if (["tool", "tools", "utility", "utilities"].includes(v)) return "Tools";
+      if (["game", "games", "gaming", "action games"].includes(v)) return "Games";
+      if (["app", "apps", "application", "applications", "apk", "apks"].includes(v)) return "Apps";
+      if (["tool", "tools", "utility", "utilities", "emulator", "emulators"].includes(v)) return "Tools";
       if (["wallpaper", "wallpapers", "theme", "themes"].includes(v)) return "Wallpaper";
-      if (["video", "videos", "movie", "movies"].includes(v)) return "Video";
-
+      if (["video", "videos", "movie", "movies", "media"].includes(v)) return "Video";
       return strict ? "" : "Apps";
     }
 
@@ -345,25 +316,52 @@
       const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
       const res = await fetch(url);
       const text = await res.text();
-      const json = JSON.parse(text.substring(47).slice(0, -2));
+      const json = parseGvizJson(text);
       const row = json.table.rows[id - 1];
 
       if (!row) return null;
 
-      const features = normalize(row.c[7], "");
-      const categoryRaw = normalize(row.c[8], "");
+      const cols = json.table.cols || [];
+      const colMap = {};
+      cols.forEach((c, i) => {
+        const k = String(c?.label || c?.id || "").trim().toLowerCase();
+        if (k) colMap[k] = i;
+      });
+
+      const getIdx = (...keys) => {
+        for (const key of keys) {
+          const k = String(key).toLowerCase();
+          if (Object.prototype.hasOwnProperty.call(colMap, k)) return colMap[k];
+        }
+        return -1;
+      };
+
+      const IDX = {
+        name: getIdx("name"),
+        description: getIdx("description"),
+        icon: getIdx("icon"),
+        version: getIdx("version"),
+        platform: getIdx("platform"),
+        downloadUrl: getIdx("downloadurl", "download url", "download"),
+        features: getIdx("features"),
+        category: getIdx("category")
+      };
+
+      const read = (idx, fallback = "") => idx >= 0 ? normalize(row.c[idx], fallback) : fallback;
+
+      const features = read(IDX.features, "");
+      const categoryRaw = read(IDX.category, "");
       const category = inferCategory(categoryRaw, features);
-      const rawIcon = normalize(row.c[2], "");
+      const rawIcon = read(IDX.icon, "");
       const safeIcon = isLikelyImageUrl(rawIcon) ? rawIcon : "";
 
       return {
-        name: normalize(row.c[0], "App"),
-        description: normalize(row.c[1], ""),
+        name: read(IDX.name, "App"),
+        description: read(IDX.description, ""),
         icon: safeIcon,
-        version: normalize(row.c[3], ""),
-        platform: normalize(row.c[4], ""),
-        downloadUrl: normalize(row.c[5], ""),
-        smartLink: normalize(row.c[6], ""),
+        version: read(IDX.version, ""),
+        platform: read(IDX.platform, ""),
+        downloadUrl: read(IDX.downloadUrl, ""),
         features,
         category,
         categoryIcon: getCategoryIcon(category)
@@ -371,91 +369,62 @@
     }
 
     function handleDownloadClick() {
-      const hasSmartLink = appSmartLink && appSmartLink.trim() !== "";
-      const hasDownload = appDownloadUrl && appDownloadUrl.trim() !== "";
-
-      if (!hasSmartLink) {
-        if (hasDownload) window.open(appDownloadUrl, "_blank", "noopener,noreferrer");
-        return;
-      }
+      const btn = document.getElementById("download-btn");
+      const hint = document.getElementById("smartlink-hint");
 
       if (!clickedOnce) {
         clickedOnce = true;
-        window.open(appSmartLink, "_blank", "noopener,noreferrer");
-        document.getElementById("btn-text").textContent = "Step 2: Tap to Download";
-        document.getElementById("hint-text").textContent = "Step 1 done. Press Back, return here, then tap again for download.";
-        document.getElementById("smartlink-hint").style.display = "flex";
+        window.open(GLOBAL_SMART_LINK, "_blank", "noopener,noreferrer");
+        btn.textContent = "Step 2: Tap for Direct Download";
+        hint.textContent = "Step 1 done. Press Back, return here, then tap again for direct download.";
       } else {
         clickedOnce = false;
-        if (hasDownload) window.open(appDownloadUrl, "_blank", "noopener,noreferrer");
-        document.getElementById("btn-text").textContent = "Download Now";
-        document.getElementById("hint-text").textContent = "Step 1: First tap opens smart link. Come back and tap again for download.";
-        document.getElementById("smartlink-hint").style.display = "flex";
+        if (appDownloadUrl && appDownloadUrl.trim()) {
+          window.open(appDownloadUrl, "_blank", "noopener,noreferrer");
+        }
+        btn.textContent = "Step 1: Open Smart Link";
+        hint.textContent = "Tap once for smart link. Come back and tap again for direct download.";
       }
     }
 
     function populatePage(app) {
       document.title = `${app.name} - ${BRAND}`;
+      document.getElementById("app-name").textContent = app.name;
+      document.getElementById("app-desc").textContent = app.description || "No description available.";
 
       const iconEl = document.getElementById("app-icon");
-      iconEl.innerHTML = "";
-
-      const img = document.createElement("img");
-      img.alt = app.name;
-      let fallbackTried = false;
-
-      img.onerror = () => {
-        if (!fallbackTried && app.categoryIcon && img.src !== app.categoryIcon) {
-          fallbackTried = true;
-          img.src = app.categoryIcon;
-          return;
+      iconEl.onerror = () => {
+        if (app.categoryIcon && iconEl.src !== app.categoryIcon) {
+          iconEl.src = app.categoryIcon;
         }
-
-        iconEl.innerHTML = `<span class="material-symbols-outlined" style="font-size:48px;color:#636565">android</span>`;
       };
-
-      img.src = app.icon || app.categoryIcon;
-      iconEl.appendChild(img);
-
-      document.getElementById("app-name").textContent = app.name;
-      document.getElementById("app-desc").textContent = app.description;
-
-      const parts = [];
-      if (app.category) parts.push(app.category);
-      if (app.version) parts.push("v" + app.version);
-      if (app.platform) parts.push(app.platform);
-      document.getElementById("app-meta").textContent = parts.join(" · ");
+      iconEl.src = app.icon || app.categoryIcon;
 
       appDownloadUrl = app.downloadUrl || "";
-      appSmartLink = GLOBAL_SMART_LINK || "";
 
-      if (!appDownloadUrl && !appSmartLink) {
-        document.getElementById("download-btn").classList.add("disabled");
-        document.getElementById("btn-text").textContent = "Coming Soon";
-      }
-
+      const chips = [];
+      if (app.category) chips.push(`<span class="chip c1">${escapeHtml(app.category)}</span>`);
+      if (app.version) chips.push(`<span class="chip c2">v${escapeHtml(app.version)}</span>`);
+      if (app.platform) chips.push(`<span class="chip c3">${escapeHtml(app.platform)}</span>`);
       if (app.features) {
-        const chips = app.features.split(",").map(f => f.trim()).filter(Boolean);
-        document.getElementById("feature-chips").innerHTML = chips.map(f => `<span class="chip">${escapeHtml(f)}</span>`).join("");
+        app.features.split(",").map(v => v.trim()).filter(Boolean).slice(0, 4).forEach(ft => {
+          chips.push(`<span class="chip">${escapeHtml(ft)}</span>`);
+        });
+      }
+      document.getElementById("feature-chips").innerHTML = chips.join("");
+
+      const btn = document.getElementById("download-btn");
+      if (!appDownloadUrl) {
+        btn.disabled = true;
+        btn.textContent = "Download Link Coming Soon";
       }
 
-      if (appSmartLink) {
-        document.getElementById("hint-text").textContent = "Step 1: First tap opens smart link. Come back and tap again for download.";
-        document.getElementById("smartlink-hint").style.display = "flex";
-      } else {
-        document.getElementById("smartlink-hint").style.display = "none";
-      }
       document.getElementById("loading").style.display = "none";
-      document.getElementById("content").style.display = "flex";
+      document.getElementById("content").style.display = "grid";
     }
 
     function showError(message = "Something went wrong. Please try again later.") {
-      document.getElementById("loading").innerHTML = `
-        <div style="text-align:center;padding:48px 16px;color:#8e9192;">
-          <span class="material-symbols-outlined" style="font-size:44px;color:#444748;display:block;margin-bottom:12px;">wifi_off</span>
-          <p style="font-size:14px;">${message}</p>
-          <a href="index.html" style="display:inline-block;margin-top:16px;background:#fff;color:#141313;border-radius:999px;padding:8px 20px;font-size:13px;font-weight:600;text-decoration:none;">← Go Back</a>
-        </div>`;
+      document.getElementById("loading").innerHTML = `<div>${message}</div>`;
     }
 
     window.addEventListener("DOMContentLoaded", async () => {
@@ -468,7 +437,7 @@
         populatePage(app);
       } catch (err) {
         console.error(err);
-        showError("Error loading data. Check your Sheet ID in config.js");
+        showError("Error loading app data. Check your Sheet settings.");
       }
 
       document.getElementById("download-btn").addEventListener("click", handleDownloadClick);
