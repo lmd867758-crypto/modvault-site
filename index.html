@@ -4,198 +4,360 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GridX Core</title>
+  <meta name="description" content="GridX Core — premium mobile-first discovery hub for Action Games, Emulators, Media, and APKs." />
+  <meta name="theme-color" content="#1A1B35" />
+  <meta property="og:title" content="GridX Core" />
+  <meta property="og:description" content="Modern premium Android library UI with clean categories and fast discovery." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://i.ibb.co.com/TqrSkrdD/Gemini-Generated-Image-bje8lbbje8lbbje8-removebg-preview.png" />
+  <link rel="icon" type="image/png" href="https://i.ibb.co.com/TqrSkrdD/Gemini-Generated-Image-bje8lbbje8lbbje8-removebg-preview.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f8f9fc;
+      --bg: #f5f6fa;
+      --bg-soft: #eef0f7;
       --surface: #ffffff;
       --ink: #1A1B35;
-      --muted: #59607a;
+      --muted: #5f6686;
       --line: #1A1B35;
       --pastel-blue: #dcecff;
-      --pastel-orange: #ffe8d6;
-      --pastel-yellow: #fff4bf;
-      --pastel-mint: #dbf7ec;
-      --pastel-lav: #ece3ff;
+      --muted-orange: #ffe3cf;
+      --pale-yellow: #fff4bf;
+      --mint-green: #dbf7ec;
+      --lavender: #ece3ff;
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 18px;
+      --shadow-soft: 0 12px 35px rgba(26, 27, 53, 0.08);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html, body { min-height: 100%; }
+
     body {
       font-family: 'Manrope', sans-serif;
-      background: var(--bg);
       color: var(--ink);
+      background:
+        radial-gradient(circle at 0% 0%, #eef1ff 0%, transparent 38%),
+        radial-gradient(circle at 100% 0%, #fff4bf70 0%, transparent 30%),
+        linear-gradient(180deg, #fafbff 0%, var(--bg) 100%);
       -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
     }
 
-    .page {
-      width: min(1160px, 100% - 24px);
+    .wrap {
+      width: min(1200px, calc(100% - 24px));
       margin: 0 auto;
-      padding: 14px 0 38px;
+      padding: 12px 0 38px;
     }
 
     .nav {
       position: sticky;
-      top: 10px;
-      z-index: 60;
-      background: #ffffffcc;
+      top: 8px;
+      z-index: 25;
       border: 3px solid var(--line);
-      border-radius: 22px;
+      border-radius: var(--radius-lg);
+      background: #ffffffd6;
       backdrop-filter: blur(8px);
-      padding: 12px 14px;
+      padding: 10px 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 10px;
       margin-bottom: 14px;
+      box-shadow: var(--shadow-soft);
     }
 
     .brand {
-      font-weight: 800;
-      font-size: 20px;
-      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
     }
 
-    .tag {
-      font-size: 12px;
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      border: 3px solid var(--line);
+      background: #fff;
+      object-fit: contain;
+      flex-shrink: 0;
+      padding: 2px;
+    }
+
+    .brand-text { min-width: 0; }
+
+    .brand-title {
+      font-size: 16px;
+      line-height: 1.1;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-subtitle {
+      font-size: 10px;
       font-weight: 700;
       color: var(--muted);
-      background: var(--pastel-lav);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .nav-links {
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--ink);
       border: 2px solid var(--line);
       border-radius: 999px;
       padding: 6px 10px;
-      white-space: nowrap;
+      font-size: 12px;
+      font-weight: 800;
+      background: #fff;
     }
+
+    .nav-link:hover { background: var(--pastel-blue); }
 
     .hero {
       border: 3px solid var(--line);
-      border-radius: 26px;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, #ffffff 0%, #edf1ff 58%, #fffdfa 100%);
       padding: 18px;
-      background: linear-gradient(135deg, #ffffff 0%, #eef2ff 100%);
-      margin-bottom: 14px;
       display: grid;
-      gap: 14px;
+      gap: 16px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-soft);
     }
 
-    .hero h1 {
-      font-size: clamp(24px, 5vw, 42px);
-      line-height: 1.08;
-      letter-spacing: -0.03em;
+    .hero-content h1 {
+      font-size: clamp(27px, 7vw, 54px);
+      line-height: 1.04;
+      letter-spacing: -0.035em;
+      max-width: 15ch;
+      margin-bottom: 10px;
     }
 
-    .hero p {
-      color: var(--muted);
+    .hero-content p {
       font-size: 14px;
-      line-height: 1.55;
-      max-width: 70ch;
+      line-height: 1.58;
+      color: var(--muted);
+      max-width: 65ch;
+      margin-bottom: 12px;
     }
 
-    .hero-badges {
+    .hero-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
     }
 
-    .pill {
-      border: 2px solid var(--line);
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border: 3px solid var(--line);
       border-radius: 999px;
-      padding: 7px 12px;
-      font-size: 12px;
-      font-weight: 700;
-      background: white;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--ink);
+      transition: transform .15s ease;
     }
 
-    .pill.blue { background: var(--pastel-blue); }
-    .pill.orange { background: var(--pastel-orange); }
-    .pill.yellow { background: var(--pastel-yellow); }
+    .hero-cta:hover { transform: translateY(-2px); }
+    .hero-cta.primary { background: var(--pale-yellow); }
+    .hero-cta.secondary { background: #fff; }
+
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .hero-chip {
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .hero-chip.blue { background: var(--pastel-blue); }
+    .hero-chip.orange { background: var(--muted-orange); }
+    .hero-chip.mint { background: var(--mint-green); }
+
+    .hero-panel {
+      border: 3px solid var(--line);
+      border-radius: 22px;
+      background: #fff;
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .hero-panel-title {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+    }
+
+    .hero-panel-row {
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      padding: 10px;
+      background: var(--bg-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .hero-panel-badge {
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 10px;
+      font-weight: 800;
+      background: #fff;
+      white-space: nowrap;
+    }
+
+    .hero-panel-badge.yellow { background: var(--pale-yellow); }
+    .hero-panel-badge.lav { background: var(--lavender); }
+
+    .category-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cat-card {
+      border: 3px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--surface);
+      padding: 12px;
+      cursor: pointer;
+      text-align: left;
+      transition: transform .16s ease;
+    }
+
+    .cat-card:active { transform: scale(0.985); }
+    .cat-card:hover { transform: translateY(-2px); }
+    .cat-card.active { outline: 3px solid #1a1b3520; }
+
+    .cat-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+
+    .cat-icon {
+      width: 34px;
+      height: 34px;
+      border: 3px solid var(--line);
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+      background: #fff;
+      flex-shrink: 0;
+    }
+
+    .cat-title {
+      font-weight: 800;
+      font-size: 14px;
+      line-height: 1.2;
+    }
+
+    .cat-count {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .c-action { background: var(--pastel-blue); }
+    .c-emu { background: var(--muted-orange); }
+    .c-media { background: var(--mint-green); }
+    .c-apk { background: var(--lavender); }
+
+    .library-shell {
+      border: 3px solid var(--line);
+      border-radius: var(--radius-xl);
+      background: var(--surface);
+      padding: 14px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .filter-bar {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
 
     .search {
       width: 100%;
       border: 3px solid var(--line);
       border-radius: 16px;
       padding: 12px 14px;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
-      background: #fff;
       color: var(--ink);
+      background: #fff;
       outline: none;
     }
 
-    .search::placeholder { color: #7e86a6; }
+    .search::placeholder { color: #7c83a1; }
 
-    .showcase {
-      display: grid;
-      gap: 10px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .showcase-card {
-      border: 3px solid var(--line);
-      border-radius: 18px;
-      padding: 14px;
-      background: white;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      min-height: 96px;
-    }
-
-    .showcase-card b { font-size: 14px; }
-    .showcase-card span { font-size: 12px; color: var(--muted); }
-
-    .showcase-card:nth-child(1) { background: var(--pastel-blue); }
-    .showcase-card:nth-child(2) { background: var(--pastel-orange); }
-    .showcase-card:nth-child(3) { background: var(--pastel-mint); }
-    .showcase-card:nth-child(4) { background: var(--pastel-lav); }
-
-    .category-strip {
+    .chips {
       display: flex;
       overflow-x: auto;
       gap: 8px;
-      padding: 4px 2px 8px;
-      margin: 8px 0 6px;
+      padding-bottom: 2px;
     }
 
-    .category-strip::-webkit-scrollbar { height: 6px; }
-    .category-strip::-webkit-scrollbar-thumb { background: #c7cce7; border-radius: 999px; }
+    .chips::-webkit-scrollbar { height: 5px; }
+    .chips::-webkit-scrollbar-thumb { background: #cfd5ef; border-radius: 999px; }
 
-    .cat-btn {
-      border: 3px solid var(--line);
+    .chip {
+      border: 2px solid var(--line);
       border-radius: 999px;
-      padding: 6px 12px 6px 6px;
       background: #fff;
-      color: var(--ink);
+      padding: 6px 11px;
       font-size: 12px;
       font-weight: 800;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
       white-space: nowrap;
-      transition: transform .15s ease;
+      cursor: pointer;
     }
 
-    .cat-btn:hover { transform: translateY(-1px); }
-    .cat-btn.active { background: var(--pastel-yellow); }
-
-    .cat-thumb {
-      width: 24px;
-      height: 24px;
-      border-radius: 999px;
-      object-fit: cover;
-      border: 2px solid var(--line);
-      background: #fff;
-      flex-shrink: 0;
-    }
+    .chip.active { background: var(--pale-yellow); }
 
     .section-head {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin: 10px 2px 10px;
-      gap: 10px;
+      justify-content: space-between;
+      gap: 8px;
+      margin: 4px 2px 10px;
     }
 
     .section-head h2 {
@@ -203,25 +365,25 @@
       letter-spacing: -0.02em;
     }
 
-    .count {
-      font-size: 12px;
+    .count-pill {
+      border: 2px solid var(--line);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 11px;
       font-weight: 800;
       color: var(--muted);
-      border: 2px solid var(--line);
       background: #fff;
-      border-radius: 999px;
-      padding: 6px 10px;
       white-space: nowrap;
     }
 
     .status {
       border: 3px dashed var(--line);
-      border-radius: 18px;
-      background: #fff;
+      border-radius: 16px;
+      background: #fdfdff;
       padding: 24px 14px;
       text-align: center;
+      font-weight: 700;
       color: var(--muted);
-      font-weight: 600;
     }
 
     .app-grid {
@@ -231,54 +393,54 @@
     }
 
     .app-card {
+      text-decoration: none;
+      color: inherit;
       border: 3px solid var(--line);
       border-radius: 20px;
       background: #fff;
       padding: 12px;
-      text-decoration: none;
-      color: inherit;
       display: grid;
-      grid-template-columns: 64px 1fr;
+      grid-template-columns: 68px 1fr;
       gap: 12px;
-      transition: transform .16s ease;
+      transition: transform .15s ease;
     }
 
     .app-card:hover { transform: translateY(-2px); }
 
     .app-icon {
-      width: 64px;
-      height: 64px;
+      width: 68px;
+      height: 68px;
       border-radius: 16px;
       border: 3px solid var(--line);
       object-fit: cover;
       background: #fff;
     }
 
-    .app-copy { min-width: 0; }
-
     .app-title {
-      font-weight: 800;
       font-size: 15px;
-      margin-bottom: 4px;
+      font-weight: 800;
       line-height: 1.25;
-      white-space: nowrap;
+      margin-bottom: 5px;
+      letter-spacing: -0.01em;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
       overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .app-desc {
       color: var(--muted);
       font-size: 12px;
       line-height: 1.45;
+      margin-bottom: 8px;
+      min-height: 34px;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      margin-bottom: 8px;
-      min-height: 34px;
     }
 
-    .app-meta {
+    .meta {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
@@ -296,67 +458,96 @@
     }
 
     .b1 { background: var(--pastel-blue); }
-    .b2 { background: var(--pastel-mint); }
-    .b3 { background: var(--pastel-lav); }
+    .b2 { background: var(--mint-green); }
+    .b3 { background: var(--lavender); }
 
     footer {
       text-align: center;
-      color: #6f7690;
+      margin-top: 16px;
       font-size: 11px;
+      color: #707795;
       font-weight: 700;
-      margin-top: 20px;
     }
 
     @media (min-width: 760px) {
-      .hero { padding: 24px; }
-      .showcase { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .wrap { width: min(1240px, calc(100% - 30px)); }
+      .nav-links { display: inline-flex; }
+      .hero { padding: 24px; grid-template-columns: 1.2fr .8fr; align-items: stretch; }
+      .category-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
       .app-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .brand-title { font-size: 18px; }
     }
 
     @media (min-width: 1080px) {
       .app-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .hero-content p { font-size: 15px; }
     }
   </style>
 </head>
 <body>
-  <div class="page">
+  <div class="wrap">
     <header class="nav">
-      <div class="brand" id="brand">GridX Core</div>
-      <div class="tag">Premium APK Hub</div>
+      <div class="brand">
+        <img class="brand-logo" src="https://i.ibb.co.com/TqrSkrdD/Gemini-Generated-Image-bje8lbbje8lbbje8-removebg-preview.png" alt="GridX Core logo" />
+        <div class="brand-text">
+          <div class="brand-title" id="brand">GridX Core</div>
+          <div class="brand-subtitle">Premium Android Hub</div>
+        </div>
+      </div>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#hero" class="nav-link">Home</a>
+        <a href="#categories" class="nav-link">Categories</a>
+        <a href="#library" class="nav-link">Library</a>
+      </nav>
     </header>
 
-    <section class="hero">
-      <div>
-        <h1>Unlimited Fun, Premium Mods.</h1>
-        <p>Modern mobile-first experience for discovering trending games, modded apps, and useful tools — fast, clean, and user-friendly.</p>
+    <section class="hero" id="hero">
+      <div class="hero-content">
+        <h1>Modern Mods & Apps, Curated Better.</h1>
+        <p>GridX Core delivers a premium, clean, and lightning-fast discovery experience for modded Android apps, utilities, and game essentials — optimized for mobile first and polished for desktop.</p>
+        <div class="hero-actions">
+          <a class="hero-cta primary" href="#library">Explore Library ↓</a>
+          <a class="hero-cta secondary" href="#categories">Browse Categories</a>
+        </div>
+        <div class="hero-chips">
+          <span class="hero-chip blue">Mobile-first responsive</span>
+          <span class="hero-chip orange">Rounded thick-stroke style</span>
+          <span class="hero-chip mint">Curated from live sheet</span>
+        </div>
       </div>
 
-      <div class="hero-badges">
-        <span class="pill blue">🔥 Epic Mod</span>
-        <span class="pill orange">⚡ Instant Access</span>
-        <span class="pill yellow">🎮 Unlimited Fun</span>
-      </div>
-
-      <div class="showcase" aria-label="Category cards">
-        <div class="showcase-card"><b>Action Games</b><span>Fast-paced battles & PvP picks</span></div>
-        <div class="showcase-card"><b>Emulators</b><span>Retro and console-like gameplay</span></div>
-        <div class="showcase-card"><b>Media</b><span>Video, streaming, and player tools</span></div>
-        <div class="showcase-card"><b>APKs</b><span>Curated mods and utilities</span></div>
-      </div>
-
-      <input id="search" class="search" placeholder="Search app, game, or feature..." />
+      <aside class="hero-panel" aria-label="Highlights">
+        <div class="hero-panel-title">Premium Discovery</div>
+        <div class="hero-panel-row">
+          <span>Action Games</span>
+          <span class="hero-panel-badge yellow">Fast updates</span>
+        </div>
+        <div class="hero-panel-row" style="background:var(--mint-green)">
+          <span>Emulators & Tools</span>
+          <span class="hero-panel-badge lav">Smooth UI</span>
+        </div>
+        <div class="hero-panel-row" style="background:var(--lavender)">
+          <span>Media & APK Library</span>
+          <span class="hero-panel-badge">Clean cards</span>
+        </div>
+      </aside>
     </section>
 
-    <div id="category-strip" class="category-strip" style="display:none"></div>
+    <section class="category-grid" id="category-grid" aria-label="Category cards"></section>
 
-    <div id="status" class="status">Loading apps...</div>
+    <section id="library" class="library-shell">
+      <div class="filter-bar">
+        <input id="search" class="search" placeholder="Search by app name, feature, platform..." aria-label="Search apps" />
+        <div id="chips" class="chips" aria-label="Category filters"></div>
+      </div>
 
-    <section id="result-wrap" style="display:none;">
       <div class="section-head">
         <h2 id="section-title">All Apps</h2>
-        <span id="result-count" class="count">0 apps</span>
+        <span id="result-count" class="count-pill">0 apps</span>
       </div>
-      <div id="app-list" class="app-grid"></div>
+
+      <div id="status" class="status">Loading apps from GridX Core data source...</div>
+      <div id="app-list" class="app-grid" style="display:none;"></div>
     </section>
 
     <footer id="copyright">© 2026 GridX Core</footer>
@@ -366,17 +557,17 @@
   <script>
     const BRAND = window.APP_CONFIG?.BRAND || "GridX Core";
     const SHEET_ID = window.APP_CONFIG?.SHEET_ID || "";
+    const SHEET_TAB = window.APP_CONFIG?.SHEET_TAB || "পত্রক1";
     const COPYRIGHT = window.APP_CONFIG?.COPYRIGHT || "© 2026 GridX Core";
 
-    const CATEGORY_ICON_MAP = {
-      Games: "https://i.ibb.co.com/wZSSNgXp/controller.jpg",
-      Apps: "https://i.ibb.co.com/zt2T8F3/apk.jpg",
-      Tools: "https://i.ibb.co.com/8L0MLqq7/strategy-game.jpg",
-      Wallpaper: "https://i.ibb.co.com/sJRDjTqr/images-2.png",
-      Video: "https://i.ibb.co.com/BHQn6pCj/play.jpg"
-    };
+    const PRESET_CATEGORIES = ["All", "Action Games", "Emulators", "Media", "APKs"];
 
-    const CATEGORY_ORDER = ["All", "Games", "Apps", "Tools", "Wallpaper", "Video"];
+    const CATEGORY_UI = {
+      "Action Games": { emoji: "🎮", className: "c-action" },
+      "Emulators": { emoji: "🕹️", className: "c-emu" },
+      "Media": { emoji: "🎬", className: "c-media" },
+      "APKs": { emoji: "📦", className: "c-apk" }
+    };
 
     document.getElementById("brand").textContent = BRAND;
     document.getElementById("copyright").textContent = COPYRIGHT;
@@ -407,43 +598,39 @@
         .replace(/'/g, "&#39;");
     }
 
-    function canonicalCategory(raw, strict = false) {
-      const v = String(raw || "").trim().toLowerCase();
-      if (!v) return strict ? "" : "Apps";
-      if (["game", "games", "gaming", "action games"].includes(v)) return "Games";
-      if (["app", "apps", "application", "applications", "apk", "apks"].includes(v)) return "Apps";
-      if (["tool", "tools", "utility", "utilities", "emulator", "emulators"].includes(v)) return "Tools";
-      if (["wallpaper", "wallpapers", "theme", "themes"].includes(v)) return "Wallpaper";
-      if (["video", "videos", "movie", "movies", "media"].includes(v)) return "Video";
-      return strict ? "" : "Apps";
-    }
-
-    function inferCategory(rawCategory, features = "") {
-      const fromCategory = canonicalCategory(rawCategory, true);
-      if (fromCategory) return fromCategory;
-
-      const fromFeature = String(features)
-        .split(",")
-        .map(v => canonicalCategory(v.trim(), true))
-        .find(Boolean);
-
-      return fromFeature || "Apps";
-    }
-
-    function getCategoryIcon(category) {
-      return CATEGORY_ICON_MAP[category] || CATEGORY_ICON_MAP.Apps;
-    }
-
     function isLikelyImageUrl(url = "") {
       return /\.(png|jpe?g|webp|gif|svg|avif)(\?|#|$)/i.test(String(url).trim());
     }
 
-    async function fetchApps() {
-      if (!SHEET_ID || SHEET_ID === "PASTE_YOUR_SHEET_ID_HERE") {
-        throw new Error("Sheet ID missing in config.js");
-      }
+    function mapCategory(rawCategory = "", features = "", name = "", description = "") {
+      const text = `${rawCategory} ${features} ${name} ${description}`.toLowerCase();
 
-      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+      if (/emulator|ppsspp|psp|ps2|retro|nintendo|dolphin|bios/.test(text)) return "Emulators";
+      if (/media|video|movie|stream|music|player|ott|youtube|netflix|audio/.test(text)) return "Media";
+      if (/action|game|fps|battle|racing|pvp|shooter|adventure|arcade/.test(text)) return "Action Games";
+      return "APKs";
+    }
+
+    function buildFallbackIcon(app) {
+      const label = app.name?.trim()?.charAt(0)?.toUpperCase() || "A";
+      const bg =
+        app.category === "Action Games" ? "#dcecff" :
+        app.category === "Emulators" ? "#ffe3cf" :
+        app.category === "Media" ? "#dbf7ec" : "#ece3ff";
+
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'>
+        <rect width='100%' height='100%' rx='26' fill='${bg}'/>
+        <rect x='18' y='18' width='124' height='124' rx='22' fill='white' stroke='#1A1B35' stroke-width='8'/>
+        <text x='50%' y='56%' text-anchor='middle' font-family='Manrope,Arial' font-size='68' font-weight='800' fill='#1A1B35'>${label}</text>
+      </svg>`;
+
+      return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+    }
+
+    async function fetchApps() {
+      if (!SHEET_ID) throw new Error("Missing SHEET_ID in config.js");
+
+      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_TAB)}&tqx=out:json`;
       const res = await fetch(url);
       const text = await res.text();
       const json = parseGvizJson(text);
@@ -451,13 +638,13 @@
       const cols = json.table.cols || [];
       const colMap = {};
       cols.forEach((c, i) => {
-        const k = String(c?.label || c?.id || "").trim().toLowerCase();
-        if (k) colMap[k] = i;
+        const key = String(c?.label || c?.id || "").trim().toLowerCase();
+        if (key) colMap[key] = i;
       });
 
       const getIdx = (...keys) => {
         for (const key of keys) {
-          const k = String(key).toLowerCase();
+          const k = key.toLowerCase();
           if (Object.prototype.hasOwnProperty.call(colMap, k)) return colMap[k];
         }
         return -1;
@@ -470,162 +657,162 @@
         version: getIdx("version"),
         platform: getIdx("platform"),
         downloadUrl: getIdx("downloadurl", "download url", "download"),
-        smartLink: getIdx("smartlink", "smart link"),
         features: getIdx("features"),
         category: getIdx("category")
       };
 
-      const read = (row, idx, fallback = "") => idx >= 0 ? normalize(row.c[idx], fallback) : fallback;
+      const rows = json.table.rows || [];
 
-      return (json.table.rows || []).map((r, index) => {
-        const name = read(r, IDX.name, "App");
-        const description = read(r, IDX.description, "");
-        const icon = read(r, IDX.icon, "");
-        const version = read(r, IDX.version, "");
-        const platform = read(r, IDX.platform, "");
-        const downloadUrl = read(r, IDX.downloadUrl, "");
-        const smartLink = read(r, IDX.smartLink, "");
-        const features = read(r, IDX.features, "");
-        const categoryRaw = read(r, IDX.category, "");
-        const category = inferCategory(categoryRaw, features);
-        const categoryIcon = getCategoryIcon(category);
-        const safeIcon = isLikelyImageUrl(icon) ? icon : "";
+      return rows
+        .map((row, rowIndex) => {
+          const read = (idx, fallback = "") => idx >= 0 ? normalize(row.c?.[idx], fallback) : fallback;
 
-        return {
-          id: index + 1,
-          name,
-          description,
-          icon: safeIcon,
-          version,
-          platform,
-          downloadUrl,
-          smartLink,
-          features,
-          category,
-          categoryIcon,
-          displayIcon: safeIcon || categoryIcon
-        };
-      }).filter(a => a.name.trim() !== "");
+          const name = read(IDX.name, "").trim();
+          const description = read(IDX.description, "").trim();
+          const features = read(IDX.features, "").trim();
+          const category = mapCategory(read(IDX.category, ""), features, name, description);
+          const icon = read(IDX.icon, "").trim();
+          const safeIcon = isLikelyImageUrl(icon) ? icon : "";
+
+          return {
+            id: rowIndex + 1,
+            name,
+            description,
+            icon: safeIcon,
+            version: read(IDX.version, "").trim(),
+            platform: read(IDX.platform, "").trim(),
+            downloadUrl: read(IDX.downloadUrl, "").trim(),
+            features,
+            category
+          };
+        })
+        .filter(app => app.name);
     }
 
-    function setupImageFallbacks() {
-      const imgs = document.querySelectorAll("img[data-fallback]");
-      imgs.forEach(img => {
-        img.addEventListener("error", () => {
-          if (img.dataset.fallbackTried === "1") {
-            img.style.display = "none";
-            return;
-          }
-          img.dataset.fallbackTried = "1";
-          const fallback = img.getAttribute("data-fallback") || "";
-          if (fallback && img.src !== fallback) {
-            img.src = fallback;
-          } else {
-            img.style.display = "none";
-          }
-        });
-      });
+    function getCategoryCount(category) {
+      if (category === "All") return apps.length;
+      return apps.filter(app => app.category === category).length;
     }
 
-    function getCategories() {
-      return [...CATEGORY_ORDER];
-    }
+    function renderCategoryGrid() {
+      const el = document.getElementById("category-grid");
+      const cats = PRESET_CATEGORIES.filter(c => c !== "All");
 
-    function renderCategoryStrip() {
-      const strip = document.getElementById("category-strip");
-      const categories = getCategories();
-
-      if (!categories.length) {
-        strip.style.display = "none";
-        return;
-      }
-
-      strip.innerHTML = categories.map(cat => {
-        const thumb = getCategoryIcon(cat === "All" ? "Apps" : cat);
+      el.innerHTML = cats.map(cat => {
+        const ui = CATEGORY_UI[cat];
         return `
-          <button class="cat-btn ${cat === activeCategory ? "active" : ""}" data-category="${escapeHtml(cat)}">
-            <img class="cat-thumb" src="${escapeHtml(thumb)}" alt="${escapeHtml(cat)}" data-fallback="${escapeHtml(CATEGORY_ICON_MAP.Apps)}" />
-            <span>${escapeHtml(cat)}</span>
+          <button class="cat-card ${ui.className} ${activeCategory === cat ? "active" : ""}" data-category="${escapeHtml(cat)}" type="button">
+            <div class="cat-head">
+              <span class="cat-title">${escapeHtml(cat)}</span>
+              <span class="cat-icon">${ui.emoji}</span>
+            </div>
+            <div class="cat-count">${getCategoryCount(cat)} item${getCategoryCount(cat) > 1 ? "s" : ""}</div>
           </button>
         `;
       }).join("");
 
-      strip.style.display = "flex";
-
-      strip.querySelectorAll(".cat-btn").forEach(btn => {
+      el.querySelectorAll(".cat-card").forEach(btn => {
         btn.addEventListener("click", () => {
           activeCategory = btn.dataset.category || "All";
-          renderFiltered();
+          renderAll();
+          document.getElementById("library").scrollIntoView({ behavior: "smooth", block: "start" });
         });
       });
     }
 
-    function cardHtml(app) {
+    function renderChips() {
+      const chipWrap = document.getElementById("chips");
+      chipWrap.innerHTML = PRESET_CATEGORIES.map(cat => `
+        <button class="chip ${cat === activeCategory ? "active" : ""}" data-category="${escapeHtml(cat)}" type="button">${escapeHtml(cat)}</button>
+      `).join("");
+
+      chipWrap.querySelectorAll(".chip").forEach(btn => {
+        btn.addEventListener("click", () => {
+          activeCategory = btn.dataset.category || "All";
+          renderAll();
+        });
+      });
+    }
+
+    function setupImageFallbacks() {
+      document.querySelectorAll("img[data-fallback]").forEach(img => {
+        img.addEventListener("error", () => {
+          const fallback = img.getAttribute("data-fallback");
+          if (fallback && img.src !== fallback) {
+            img.src = fallback;
+          }
+        });
+      });
+    }
+
+    function renderAppCard(app) {
+      const fallback = buildFallbackIcon(app);
+      const features = app.features
+        ? app.features.split(",").map(v => v.trim()).filter(Boolean).slice(0, 1)
+        : [];
+
       return `
         <a class="app-card" href="./dl.html?id=${app.id}">
-          <img class="app-icon" src="${escapeHtml(app.displayIcon)}" alt="${escapeHtml(app.name)}" data-fallback="${escapeHtml(app.categoryIcon)}" />
-          <div class="app-copy">
+          <img class="app-icon" src="${escapeHtml(app.icon || fallback)}" data-fallback="${escapeHtml(fallback)}" alt="${escapeHtml(app.name)} icon" />
+          <div>
             <div class="app-title">${escapeHtml(app.name)}</div>
-            <div class="app-desc">${escapeHtml(app.description || "No description")}</div>
-            <div class="app-meta">
+            <div class="app-desc">${escapeHtml(app.description || "No description available.")}</div>
+            <div class="meta">
               <span class="badge b1">${escapeHtml(app.category)}</span>
               ${app.version ? `<span class="badge b2">v${escapeHtml(app.version)}</span>` : ""}
               ${app.platform ? `<span class="badge b3">${escapeHtml(app.platform)}</span>` : ""}
+              ${features[0] ? `<span class="badge">${escapeHtml(features[0])}</span>` : ""}
             </div>
           </div>
         </a>
       `;
     }
 
-    function renderFiltered() {
+    function renderAll() {
       const q = document.getElementById("search").value.trim().toLowerCase();
+      const listEl = document.getElementById("app-list");
+      const statusEl = document.getElementById("status");
 
-      const filtered = apps.filter(a => {
-        const categoryOk = activeCategory === "All" || a.category === activeCategory;
-        const textOk = !q ||
-          a.name.toLowerCase().includes(q) ||
-          a.description.toLowerCase().includes(q) ||
-          a.features.toLowerCase().includes(q) ||
-          a.category.toLowerCase().includes(q);
-        return categoryOk && textOk;
+      const filtered = apps.filter(app => {
+        const categoryOk = activeCategory === "All" || app.category === activeCategory;
+        const text = `${app.name} ${app.description} ${app.features} ${app.platform} ${app.category}`.toLowerCase();
+        const queryOk = !q || text.includes(q);
+        return categoryOk && queryOk;
       });
 
-      const status = document.getElementById("status");
-      const wrap = document.getElementById("result-wrap");
-      const listEl = document.getElementById("app-list");
+      renderCategoryGrid();
+      renderChips();
 
       if (!filtered.length) {
+        listEl.style.display = "none";
         listEl.innerHTML = "";
-        wrap.style.display = "none";
-        status.style.display = "block";
-        status.textContent = "No apps found for this category/search.";
+        statusEl.style.display = "block";
+        statusEl.textContent = "No matching apps found in this category/search.";
       } else {
-        listEl.innerHTML = filtered.map(cardHtml).join("");
-        status.style.display = "none";
-        wrap.style.display = "block";
-        document.getElementById("section-title").textContent = activeCategory === "All" ? "All Apps" : `${activeCategory} Apps`;
-        document.getElementById("result-count").textContent = `${filtered.length} app${filtered.length > 1 ? "s" : ""}`;
+        listEl.innerHTML = filtered.map(renderAppCard).join("");
+        listEl.style.display = "grid";
+        statusEl.style.display = "none";
       }
 
-      renderCategoryStrip();
+      document.getElementById("section-title").textContent = activeCategory === "All" ? "All Apps" : activeCategory;
+      document.getElementById("result-count").textContent = `${filtered.length} app${filtered.length === 1 ? "" : "s"}`;
       setupImageFallbacks();
     }
 
     function setupSearch() {
-      const input = document.getElementById("search");
-      input.addEventListener("input", renderFiltered);
+      document.getElementById("search").addEventListener("input", renderAll);
     }
 
     (async function init() {
       try {
         apps = await fetchApps();
         setupSearch();
-        renderFiltered();
-      } catch (err) {
-        const status = document.getElementById("status");
-        status.style.display = "block";
-        status.textContent = "Error loading data. Open config.js and set your Google Sheet ID.";
-        console.error(err);
+        renderAll();
+      } catch (error) {
+        const statusEl = document.getElementById("status");
+        statusEl.style.display = "block";
+        statusEl.textContent = "Could not load Google Sheet data. Verify SHEET_ID, SHEET_TAB, and sheet visibility.";
+        console.error(error);
       }
     })();
   </script>
