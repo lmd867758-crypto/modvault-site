@@ -23,6 +23,7 @@
       --orange: #f5a623;
       --purple: #8e44dc;
       --red: #eb3b3b;
+      --exe: #19b9a7;
       --shadow: 0 10px 24px rgba(24, 35, 60, .10);
       --radius-card: 16px;
       --radius-main: 24px;
@@ -157,6 +158,7 @@
     .dot.purple { background: #8e44dc; }
     .dot.red { background: #eb3b3b; }
     .dot.orange { background: #f5a623; }
+    .dot.exe { background: var(--exe); }
     .dot.active { border-color: #28bfd3; }
 
     .main {
@@ -279,6 +281,7 @@
     .h-tools { background: var(--orange); }
     .h-wallpaper { background: var(--purple); }
     .h-video { background: var(--red); }
+    .h-exe { background: var(--exe); }
 
     .footer {
       display: flex;
@@ -327,7 +330,7 @@
       </a>
 
       <div class="search-wrap">
-        <input id="search" class="search" placeholder="Search Games, Apps, Tools, or More..." />
+        <input id="search" class="search" placeholder="Search Games, Apps, Tools, EXE, or More..." />
       </div>
 
       <nav class="top-links" aria-label="Top links">
@@ -343,6 +346,7 @@
           <h3>Trending Categories</h3>
           <div class="item" data-filter="Games"><span class="dot green"></span>Games</div>
           <div class="item" data-filter="Apps"><span class="dot blue"></span>Apps</div>
+          <div class="item" data-filter="EXE"><span class="dot exe"></span>EXE</div>
           <div class="item" data-filter="Wallpaper"><span class="dot purple"></span>Wallpaper</div>
         </div>
 
@@ -367,6 +371,7 @@
           <div class="item" data-filter="Games"><span class="dot"></span>Games</div>
           <div class="item" data-filter="Apps"><span class="dot"></span>Apps</div>
           <div class="item" data-filter="Tools"><span class="dot"></span>Tools</div>
+          <div class="item" data-filter="EXE"><span class="dot exe"></span>EXE</div>
           <div class="item" data-filter="Wallpaper"><span class="dot"></span>Wallpaper</div>
           <div class="item" data-filter="Video"><span class="dot"></span>Video</div>
         </div>
@@ -424,8 +429,9 @@
       return /\.(png|jpe?g|webp|gif|svg|avif)(\?|#|$)/i.test(String(url).trim());
     }
 
-    function visualCategory(rawCategory = "", features = "", name = "", description = "") {
-      const text = `${rawCategory} ${features} ${name} ${description}`.toLowerCase();
+    function visualCategory(rawCategory = "", features = "", name = "", description = "", downloadUrl = "") {
+      const text = `${rawCategory} ${features} ${name} ${description} ${downloadUrl}`.toLowerCase();
+      if (/\bexe\b|\.exe(\?|$)|windows|pc\s?game|desktop/.test(text)) return "EXE";
       if (/wallpaper|theme|background/.test(text)) return "Wallpaper";
       if (/video|media|movie|stream|player|youtube|netflix|audio/.test(text)) return "Video";
       if (/emulator|ppsspp|psp|ps2|retro|nintendo|dolphin|bios|tool|utility/.test(text)) return "Tools";
@@ -436,6 +442,7 @@
     function headClass(category) {
       if (category === "Games") return "h-games";
       if (category === "Tools") return "h-tools";
+      if (category === "EXE") return "h-exe";
       if (category === "Wallpaper") return "h-wallpaper";
       if (category === "Video") return "h-video";
       return "h-apps";
@@ -446,6 +453,7 @@
       const color =
         app.vCategory === "Games" ? "#42be8a" :
         app.vCategory === "Tools" ? "#f5a623" :
+        app.vCategory === "EXE" ? "#19b9a7" :
         app.vCategory === "Wallpaper" ? "#8e44dc" :
         app.vCategory === "Video" ? "#eb3b3b" : "#2d9cdb";
 
@@ -532,7 +540,7 @@
             downloadUrl: read(IDX.downloadUrl, "").trim(),
             features,
             category,
-            vCategory: visualCategory(category, features, name, description)
+            vCategory: visualCategory(category, features, name, description, read(IDX.downloadUrl, "").trim())
           };
         })
         .filter(app => app.name);
@@ -567,7 +575,7 @@
           <a class="card ${tall ? 'tall' : ''}" href="./dl.html?id=${app.id}">
             <div class="card-head ${headClass(app.vCategory)}">
               <span>${head}</span>
-              <span>${app.vCategory === 'Video' ? '▶' : app.vCategory === 'Wallpaper' ? '🖼' : app.vCategory === 'Tools' ? '🛠' : app.vCategory === 'Games' ? '🎮' : '▦'}</span>
+              <span>${app.vCategory === 'Video' ? '▶' : app.vCategory === 'Wallpaper' ? '🖼' : app.vCategory === 'Tools' ? '🛠' : app.vCategory === 'EXE' ? '💻' : app.vCategory === 'Games' ? '🎮' : '▦'}</span>
             </div>
             <div class="card-body">
               <div class="title">${title}</div>
