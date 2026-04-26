@@ -409,6 +409,30 @@
       background: #fff;
     }
 
+    .load-more-wrap {
+      display: none;
+      justify-content: center;
+      padding: 10px 6px 4px;
+    }
+
+    .load-more-btn {
+      border: 1px solid #c8d7e6;
+      border-radius: 999px;
+      background: #fff;
+      color: #1f2a44;
+      font-size: 14px;
+      font-weight: 800;
+      padding: 10px 16px;
+      min-width: 130px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(26, 39, 63, .08);
+    }
+
+    .load-more-btn:disabled {
+      opacity: .65;
+      cursor: wait;
+    }
+
     @media (max-width: 1280px) {
       .top-links { font-size: 17px; gap: 16px; }
       .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -508,6 +532,8 @@
       }
       .footer { display: none; }
       .fab-filter { display: inline-flex; align-items: center; justify-content: center; }
+      .load-more-wrap { padding-bottom: 8px; }
+      .load-more-btn { min-width: 120px; font-size: 13px; padding: 9px 14px; }
     }
   </style>
 </head>
@@ -587,6 +613,9 @@
         <section id="grid" class="grid" aria-label="App grid">
           <div id="status" class="status">Loading GridX Core content...</div>
         </section>
+        <div id="load-more-wrap" class="load-more-wrap">
+          <button id="load-more-btn" class="load-more-btn" type="button">Load More</button>
+        </div>
       </main>
     </div>
 
@@ -608,8 +637,13 @@
 
     document.title = BRAND;
 
+    const PAGE_SIZE = 24;
+
     let apps = [];
     let activeFilter = "All";
+    let loadedRows = 0;
+    let allLoaded = false;
+    let isLoadingMore = false;
 
     function parseGvizJson(text) {
       const match = text.match(/google\.visualization\.Query\.setResponse\((.*)\);?\s*$/s);
@@ -691,10 +725,11 @@
       return 1 + (n % max);
     }
 
-    async function fetchApps() {
+    async function fetchApps(limit = PAGE_SIZE, offset = 0) {
       if (!SHEET_ID) throw new Error("Missing SHEET_ID in config.js");
 
-      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_TAB)}&tqx=out:json`;
+      const tq = encodeURIComponent(`select * limit ${limit} offset ${offset}`);
+      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_TAB)}&tqx=out:json&tq=${tq}`;
       const res = await fetch(url);
       const text = await res.text();
       const json = parseGvizJson(text);
@@ -739,7 +774,7 @@
           const safeIcon = isLikelyImageUrl(icon) ? icon : "";
 
           return {
-            id: rowIndex + 1,
+            id: offset + rowIndex + 1,
             name,
             description,
             icon: safeIcon,
@@ -752,6 +787,45 @@
           };
         })
         .filter(app => app.name);
+    }
+
+    function updateLoadMoreVisibility(searchQuery = "") {
+      const wrap = document.getElementById('load-more-wrap');
+      const btn = document.getElementById('load-more-btn');
+      if (!wrap || !btn) return;
+
+      const shouldShow = !allLoaded && !searchQuery;
+      wrap.style.display = shouldShow ? 'flex' : 'none';
+      btn.disabled = isLoadingMore;
+      btn.textContent = isLoadingMore ? 'Loading...' : 'Load More';
+    }
+
+    async function loadMoreApps(reset = false) {
+      if (isLoadingMore) return;
+
+      if (reset) {
+        apps = [];
+        loadedRows = 0;
+        allLoaded = false;
+      }
+
+      if (allLoaded) {
+        renderGrid();
+        return;
+      }
+
+      isLoadingMore = true;
+      updateLoadMoreVisibility((document.getElementById('search').value || '').trim());
+
+      try {
+        const batch = await fetchApps(PAGE_SIZE, loadedRows);
+        apps = apps.concat(batch);
+        loadedRows += batch.length;
+        if (batch.length < PAGE_SIZE) allLoaded = true;
+      } finally {
+        isLoadingMore = false;
+        renderGrid();
+      }
     }
 
     function renderGrid() {
@@ -767,6 +841,7 @@
 
       if (!filtered.length) {
         grid.innerHTML = `<div class='status'>No matching apps found.</div>`;
+        updateLoadMoreVisibility(search);
         return;
       }
 
@@ -801,6 +876,8 @@
           </a>
         `;
       }).join('');
+
+      updateLoadMoreVisibility(search);
     }
 
     function setupMobileMenu() {
@@ -885,14 +962,32 @@
       }
     }
 
+    function setupLoadMore() {
+      const btn = document.getElementById('load-more-btn');
+      if (!btn) return;
+      btn.addEventListener('click', () => {
+        loadMoreApps(false);
+      });
+    }
+
+    function setupAutoLoadOnScroll() {
+      window.addEventListener('scroll', () => {
+        const search = (document.getElementById('search').value || '').trim();
+        if (search || allLoaded || isLoadingMore) return;
+        const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 220;
+        if (nearBottom) loadMoreApps(false);
+      }, { passive: true });
+    }
+
     document.getElementById('search').addEventListener('input', renderGrid);
 
     (async function init() {
       try {
-        apps = await fetchApps();
         setupMobileMenu();
         setupFilterClicks();
-        renderGrid();
+        setupLoadMore();
+        setupAutoLoadOnScroll();
+        await loadMoreApps(true);
       } catch (error) {
         const grid = document.getElementById('grid');
         grid.innerHTML = `<div class='status'>Could not load Google Sheet data. Verify SHEET_ID, SHEET_TAB, and sheet visibility.</div>`;
