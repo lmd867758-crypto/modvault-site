@@ -644,6 +644,7 @@
     let loadedRows = 0;
     let allLoaded = false;
     let isLoadingMore = false;
+    let loadingAllForSearch = false;
 
     function parseGvizJson(text) {
       const match = text.match(/google\.visualization\.Query\.setResponse\((.*)\);?\s*$/s);
@@ -796,8 +797,8 @@
 
       const shouldShow = !allLoaded && !searchQuery;
       wrap.style.display = shouldShow ? 'flex' : 'none';
-      btn.disabled = isLoadingMore;
-      btn.textContent = isLoadingMore ? 'Loading...' : 'Load More';
+      btn.disabled = isLoadingMore || loadingAllForSearch;
+      btn.textContent = loadingAllForSearch ? 'Indexing...' : (isLoadingMore ? 'Loading...' : 'Load More');
     }
 
     async function loadMoreApps(reset = false) {
@@ -828,6 +829,22 @@
       }
     }
 
+    async function ensureAllDataForSearch() {
+      if (allLoaded || loadingAllForSearch) return;
+      loadingAllForSearch = true;
+
+      try {
+        let guard = 0;
+        while (!allLoaded && guard < 500) {
+          await loadMoreApps(false);
+          guard += 1;
+        }
+      } finally {
+        loadingAllForSearch = false;
+        renderGrid();
+      }
+    }
+
     function renderGrid() {
       const search = (document.getElementById('search').value || '').trim().toLowerCase();
       const grid = document.getElementById('grid');
@@ -839,8 +856,14 @@
         return inFilter && inSearch;
       });
 
+      if (search && !allLoaded && !loadingAllForSearch) {
+        ensureAllDataForSearch();
+      }
+
       if (!filtered.length) {
-        grid.innerHTML = `<div class='status'>No matching apps found.</div>`;
+        grid.innerHTML = search && !allLoaded
+          ? `<div class='status'>Searching full sheet...</div>`
+          : `<div class='status'>No matching apps found.</div>`;
         updateLoadMoreVisibility(search);
         return;
       }
@@ -979,7 +1002,26 @@
       }, { passive: true });
     }
 
-    document.getElementById('search').addEventListener('input', renderGrid);
+    function setupSearchInput() {
+      const searchEl = document.getElementById('search');
+      if (!searchEl) return;
+
+      let timer = null;
+      searchEl.addEventListener('input', () => {
+        renderGrid();
+
+        const query = searchEl.value.trim();
+        if (!query) {
+          if (timer) clearTimeout(timer);
+          return;
+        }
+
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => {
+          ensureAllDataForSearch();
+        }, 220);
+      });
+    }
 
     (async function init() {
       try {
@@ -987,6 +1029,7 @@
         setupFilterClicks();
         setupLoadMore();
         setupAutoLoadOnScroll();
+        setupSearchInput();
         await loadMoreApps(true);
       } catch (error) {
         const grid = document.getElementById('grid');
