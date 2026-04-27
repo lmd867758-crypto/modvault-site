@@ -406,7 +406,8 @@
     async function fetchApp(id) {
       if (!SHEET_ID) throw new Error("Sheet ID missing in config.js");
 
-      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_TAB)}&tqx=out:json`;
+      const cacheBust = Date.now();
+      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_TAB)}&tqx=out:json&_=${cacheBust}`;
       const res = await fetch(url);
       const text = await res.text();
       const json = parseGvizJson(text);

@@ -944,7 +944,8 @@
       if (!SHEET_ID) throw new Error("Missing SHEET_ID in config.js");
 
       const tq = encodeURIComponent(`select * limit ${limit} offset ${offset}`);
-      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_TAB)}&tqx=out:json&tq=${tq}`;
+      const cacheBust = Date.now();
+      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_TAB)}&tqx=out:json&tq=${tq}&_=${cacheBust}`;
       const res = await fetch(url);
       const text = await res.text();
       const json = parseGvizJson(text);
