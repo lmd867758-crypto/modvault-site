@@ -514,7 +514,7 @@
       .grid > .card:nth-child(13n + 11),
       .grid > .card:nth-child(13n + 13) {
         grid-column: span 2;
-        grid-row: span 8;
+        grid-row: span 7;
       }
 
       .grid > .card:nth-child(13n + 8),
@@ -523,12 +523,20 @@
         grid-row: span 7;
       }
 
+      .grid > .card:nth-child(13n + 7) .card-body,
+      .grid > .card:nth-child(13n + 9) .card-body,
+      .grid > .card:nth-child(13n + 11) .card-body,
+      .grid > .card:nth-child(13n + 13) .card-body {
+        padding: 6px;
+        gap: 4px;
+      }
+
       .grid > .card:nth-child(13n + 7) .title,
       .grid > .card:nth-child(13n + 9) .title,
       .grid > .card:nth-child(13n + 11) .title,
       .grid > .card:nth-child(13n + 13) .title {
-        font-size: 12px;
-        min-height: 20px;
+        font-size: 11px;
+        min-height: 18px;
         -webkit-line-clamp: 1;
       }
 
@@ -536,14 +544,15 @@
       .grid > .card:nth-child(13n + 9) .thumb-wrap,
       .grid > .card:nth-child(13n + 11) .thumb-wrap,
       .grid > .card:nth-child(13n + 13) .thumb-wrap {
-        aspect-ratio: 2.25 / 1;
+        aspect-ratio: 2.9 / 1;
       }
 
       .grid > .card:nth-child(13n + 7) .meta,
       .grid > .card:nth-child(13n + 9) .meta,
       .grid > .card:nth-child(13n + 11) .meta,
       .grid > .card:nth-child(13n + 13) .meta {
-        font-size: 10px;
+        font-size: 9px;
+        line-height: 1.2;
       }
     }
 
