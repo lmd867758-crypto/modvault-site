@@ -514,7 +514,7 @@
       .grid > .card:nth-child(13n + 11),
       .grid > .card:nth-child(13n + 13) {
         grid-column: span 2;
-        grid-row: span 7;
+        grid-row: span 8;
       }
 
       .grid > .card:nth-child(13n + 8),
@@ -532,11 +532,11 @@
         -webkit-line-clamp: 1;
       }
 
-      .grid > .card:nth-child(13n + 7) .meta:first-of-type,
-      .grid > .card:nth-child(13n + 9) .meta:first-of-type,
-      .grid > .card:nth-child(13n + 11) .meta:first-of-type,
-      .grid > .card:nth-child(13n + 13) .meta:first-of-type {
-        display: none;
+      .grid > .card:nth-child(13n + 7) .thumb-wrap,
+      .grid > .card:nth-child(13n + 9) .thumb-wrap,
+      .grid > .card:nth-child(13n + 11) .thumb-wrap,
+      .grid > .card:nth-child(13n + 13) .thumb-wrap {
+        aspect-ratio: 2.25 / 1;
       }
 
       .grid > .card:nth-child(13n + 7) .meta,
@@ -544,15 +544,6 @@
       .grid > .card:nth-child(13n + 11) .meta,
       .grid > .card:nth-child(13n + 13) .meta {
         font-size: 10px;
-      }
-
-      .grid > .card:nth-child(13n + 7) .button,
-      .grid > .card:nth-child(13n + 9) .button,
-      .grid > .card:nth-child(13n + 11) .button,
-      .grid > .card:nth-child(13n + 13) .button {
-        width: 70px;
-        height: 26px;
-        font-size: 14px;
       }
     }
 
