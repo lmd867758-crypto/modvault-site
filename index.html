@@ -498,59 +498,15 @@
         font-size: 20px;
       }
 
-      .grid > .card:nth-child(13n + 1),
-      .grid > .card:nth-child(13n + 2),
-      .grid > .card:nth-child(13n + 3),
-      .grid > .card:nth-child(13n + 4),
-      .grid > .card:nth-child(13n + 5) {
+      /* Desktop: সব box first-row size, শুধু 2nd-row first big box একই থাকবে */
+      .grid > .card {
         grid-column: span 3;
         grid-row: span 7;
       }
 
-      .grid > .card:nth-child(13n + 6),
-      .grid > .card:nth-child(13n + 10) {
+      .grid > .card:nth-child(13n + 6) {
         grid-column: span 3;
         grid-row: span 14;
-      }
-
-      .grid > .card:nth-child(13n + 7),
-      .grid > .card:nth-child(13n + 9),
-      .grid > .card:nth-child(13n + 11),
-      .grid > .card:nth-child(13n + 13) {
-        grid-column: span 2;
-        grid-row: span 7;
-      }
-
-      .grid > .card:nth-child(13n + 8),
-      .grid > .card:nth-child(13n + 12) {
-        grid-column: span 5;
-        grid-row: span 11;
-      }
-
-      .grid > .card:nth-child(13n + 7) .card-body,
-      .grid > .card:nth-child(13n + 9) .card-body,
-      .grid > .card:nth-child(13n + 11) .card-body,
-      .grid > .card:nth-child(13n + 13) .card-body {
-        padding: 6px;
-        gap: 4px;
-      }
-
-      .grid > .card:nth-child(13n + 7) .title,
-      .grid > .card:nth-child(13n + 9) .title,
-      .grid > .card:nth-child(13n + 11) .title,
-      .grid > .card:nth-child(13n + 13) .title {
-        font-size: 11px;
-        min-height: 18px;
-        -webkit-line-clamp: 1;
-      }
-
-
-      .grid > .card:nth-child(13n + 7) .meta,
-      .grid > .card:nth-child(13n + 9) .meta,
-      .grid > .card:nth-child(13n + 11) .meta,
-      .grid > .card:nth-child(13n + 13) .meta {
-        font-size: 9px;
-        line-height: 1.2;
       }
     }
 
