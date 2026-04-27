@@ -576,10 +576,6 @@
         gap: 8px;
         grid-auto-flow: row dense;
       }
-      /* Mobile: first row cards hide (start from 2nd row) */
-      .grid > .card:nth-child(-n + 3) {
-        display: none;
-      }
       .card {
         border-radius: 14px;
         min-height: 0;
@@ -1014,12 +1010,16 @@
       const search = (document.getElementById('search').value || '').trim().toLowerCase();
       const grid = document.getElementById('grid');
 
-      const filtered = apps.filter(app => {
+      let filtered = apps.filter(app => {
         const inFilter = activeFilter === 'All' || app.vCategory === activeFilter;
         const text = `${app.name} ${app.description} ${app.features} ${app.platform} ${app.category} ${app.vCategory}`.toLowerCase();
         const inSearch = !search || text.includes(search);
         return inFilter && inSearch;
       });
+
+      if (window.innerWidth <= 980) {
+        filtered = filtered.slice(3);
+      }
 
       if (search && !allLoaded && !loadingAllForSearch) {
         ensureAllDataForSearch();
