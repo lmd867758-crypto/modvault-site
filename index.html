@@ -767,6 +767,7 @@
 
     const PAGE_SIZE = 24;
     const SKIP_ROWS = 3;
+    const MOBILE_SKIP_CARDS = 3;
 
     let apps = [];
     let activeFilter = "All";
@@ -1017,6 +1018,10 @@
         const inSearch = !search || text.includes(search);
         return inFilter && inSearch;
       });
+
+      if (window.innerWidth <= 980) {
+        filtered = filtered.slice(MOBILE_SKIP_CARDS);
+      }
 
 
       if (search && !allLoaded && !loadingAllForSearch) {
