@@ -339,7 +339,9 @@
       border-radius: 13px;
       overflow: hidden;
       background: #e9eef5;
+      width: 100%;
       aspect-ratio: 16/9;
+      flex: 0 0 auto;
       display: grid;
       place-items: center;
     }
@@ -475,6 +477,10 @@
         gap: 6px;
       }
 
+      .grid .thumb-wrap {
+        aspect-ratio: 16/9 !important;
+      }
+
       .title {
         font-size: clamp(13px, 1.05vw, 18px);
         min-height: 30px;
@@ -542,12 +548,6 @@
         -webkit-line-clamp: 1;
       }
 
-      .grid > .card:nth-child(13n + 7) .thumb-wrap,
-      .grid > .card:nth-child(13n + 9) .thumb-wrap,
-      .grid > .card:nth-child(13n + 11) .thumb-wrap,
-      .grid > .card:nth-child(13n + 13) .thumb-wrap {
-        aspect-ratio: 2.9 / 1;
-      }
 
       .grid > .card:nth-child(13n + 7) .meta,
       .grid > .card:nth-child(13n + 9) .meta,
@@ -644,6 +644,10 @@
         display: flex;
         flex-direction: column;
       }
+
+      .grid .thumb-wrap {
+        aspect-ratio: 16/9 !important;
+      }
       .title {
         font-size: clamp(13px, 4vw, 18px);
         min-height: 30px;
@@ -682,13 +686,6 @@
         font-size: 12px;
       }
 
-      .grid > .card:nth-child(8n + 1) .thumb-wrap,
-      .grid > .card:nth-child(8n + 2) .thumb-wrap,
-      .grid > .card:nth-child(8n + 3) .thumb-wrap,
-      .grid > .card:nth-child(8n + 7) .thumb-wrap,
-      .grid > .card:nth-child(8n + 8) .thumb-wrap {
-        aspect-ratio: 2.6 / 1;
-      }
 
       .grid > .card:nth-child(8n + 1) .meta:first-of-type,
       .grid > .card:nth-child(8n + 2) .meta:first-of-type,
