@@ -1,208 +1,193 @@
-# GridX Core — Full Project Guide (Handover)
+# GridX Core — AI Agent Operation Guide
 
 _Last updated: 2026-04-27_
 
-এই গাইডটা এমনভাবে লেখা যাতে তুমি **new tab খুলে যেকোনো সময়** website edit/update করতে পারো।
+এই গাইডটা **manual edit করার জন্য না**।
+এটা এমনভাবে লেখা যাতে তুমি **new tab থেকে GPT/AI agent দিয়ে** project edit করাতে পারো।
 
 ---
 
-## 1) Project Summary
+## 1) Project Identity (AI-কে সবসময় দেবে)
 
-- **Project name:** GridX Core
-- **Repository:** `lmd867758-crypto/modvault-site`
-- **Live site:** `https://modvault-site.vercel.app/`
-- **Stack:** HTML + CSS + Vanilla JavaScript
-- **Deployment:** GitHub `main` branch push হলে Vercel auto-deploy
-
----
-
-## 2) Folder & File Map
-
-Project root: `modvault-site/`
-
-### Core files
-- `index.html` → Home page, category filters, card grid, search, latest-first ordering
-- `dl.html` → App details page, 2-step download flow (smart link + final link)
-- `config.js` → Brand name + Google Sheet config
-- `README-BN.md` → Basic setup notes
-- `PROJECT_GUIDE.md` → (এই ফাইল) full maintenance guide
+- **Repo:** `https://github.com/lmd867758-crypto/modvault-site`
+- **Live:** `https://modvault-site.vercel.app/`
+- **Main branch:** `main`
+- **Core files:**
+  - `index.html` (home/grid/search)
+  - `dl.html` (details + 2-step download)
+  - `config.js` (sheet + brand)
 
 ---
 
-## 3) Data Source (Google Sheet)
+## 2) AI Agent-কে দেয়ার Master Prompt (copy/paste)
 
-Website data Google Sheet থেকে আসে।
+নিচের template copy করে AI-কে দাও (প্রতি কাজে):
 
-### Required columns (header row)
-`name | description | icon | version | platform | downloadUrl | features | category`
+```text
+You are editing my live website repo.
+Repo: https://github.com/lmd867758-crypto/modvault-site
+Branch: main
 
-### Important rules
-1. **`icon` must be direct image URL**
-   - ✅ valid: `https://i.ibb.co.../image.jpg`
-   - ❌ invalid: `https://ibb.co/...` (page link)
-   - ❌ invalid: `https://gemini.google.com/...` (web page)
+Rules:
+1) Change ONLY what I ask.
+2) Do NOT refactor unrelated code.
+3) Do NOT rename IDs/classes/functions unless required.
+4) Keep Google Sheet data mapping unchanged unless I explicitly ask.
+5) After change: show exact diff summary, commit hash, and what to test.
+6) Push to main.
 
-2. `downloadUrl` must be real file/page download link
-3. Sheet must be shared as Viewer (public link)
-
----
-
-## 4) Config (Brand + Sheet)
-
-File: `config.js`
-
-```js
-window.APP_CONFIG = {
-  SHEET_ID: "YOUR_SHEET_ID",
-  SHEET_TAB: "পত্রক1",
-  BRAND: "GridX Core",
-  COPYRIGHT: "© 2026 GridX Core"
-};
+Now do this task:
+[এখানে তোমার specific কাজ লিখো]
 ```
 
 ---
 
-## 5) Home Page Behavior (`index.html`)
+## 3) Critical Rules (AI যেন ভাঙচুর না করে)
 
-### Current key behavior
-- Responsive mobile/desktop UI
-- Card thumbnails in **16:9** frame
-- Card image centered
-- Platform + rating visible
-- Card action button removed
-- Smooth scrolling enabled
-- **Latest uploads appear first** (most recent row at top)
-- Search results also follow latest-first order
+AI-কে সবসময় বলবে:
 
-### Latest-first logic
-Data loaded from sheet, mapped, then reversed:
-
-- `latestAppsCache = trimmed.reverse();`
-
-So new rows added at bottom of sheet will show at top on site.
+1. **Unrelated CSS/JS touch করবে না**
+2. `renderGrid()`, `fetchApps()`, `setupDownloadFlow()` accidental change করবে না
+3. `id` attributes change করবে না (`grid`, `search`, `download-step-btn`, etc.)
+4. `config.js` format break করবে না
+5. Commit করার আগে ছোট diff maintain করবে
 
 ---
 
-## 6) Details Page Behavior (`dl.html`)
+## 4) Current Live Logic (AI must preserve)
 
-### Current key behavior
-- Full redesigned details UI (matching site style)
-- App icon/logo frame is **16:9**
-- Feature chips + highlights list
-- **2-step download flow**:
-  1. First click opens smart link
-  2. Return and click again for actual download
+### Home (`index.html`)
+- Card UI responsive (mobile + desktop)
+- Thumbnails: 16:9
+- Latest uploads first (home + search)
+- Search works over loaded + indexed data
 
-### Smart link currently used
-`https://www.profitablecpmratenetwork.com/th4iq4cz?key=da8ba8716ee7c214e9decd3ec3f0f3dd`
-
-### Gate logic
-- Gate state stored in browser `localStorage`
-- Per-app key format: `gx_smart_gate_<appId>`
-- Gate validity window: 30 minutes
+### Details (`dl.html`)
+- New UI style aligned with home
+- 2-step download:
+  1) smart link click
+  2) second click = final download
+- Smart link stored in code constant
+- App data from Google Sheet row by `id`
 
 ---
 
-## 7) Edit Anytime from New Tab (No local setup needed)
+## 5) Sheet Structure (must not break)
 
-যদি তুমি local terminal ছাড়া সরাসরি browser থেকেই edit করতে চাও:
+Header row:
 
-1. New tab খুলে GitHub repo open করো  
-   `https://github.com/lmd867758-crypto/modvault-site`
-2. যে file edit করতে চাও (`index.html`, `dl.html`, `config.js`) open করো
-3. ✏️ Edit button (pencil) চাপো
-4. Change করে **Commit directly to `main`**
-5. 1–2 min wait → Vercel auto-deploy
-6. Live site hard refresh (`Ctrl + F5`)
+`name | description | icon | version | platform | downloadUrl | features | category`
 
-### Faster method
-- GitHub repo page এ `.` (dot) press করলে web editor (github.dev) খুলে যায়
-- সেখান থেকে multiple file edit করা সহজ
+### Icon note
+- Must be **direct image URL** (e.g. `i.ibb.co...jpg`)
+- `ibb.co/...` page links are invalid for image rendering
 
 ---
 
-## 8) Common Edit Tasks (Quick Reference)
+## 6) Ready-to-use Task Prompts (copy/paste)
 
-### A) Home card layout change
-- File: `index.html`
-- Area: CSS sections (`.grid`, `.card`, media queries)
+### A) UI tweak prompt
+```text
+Edit only index.html styles.
+Task: [describe change].
+Keep grid logic unchanged.
+No JS logic edits.
+Commit and push main.
+```
 
-### B) Category color/headline/icon style
-- File: `index.html`
-- Functions/classes:
-  - `headClass(category)`
-  - `toneClass(category)`
-  - `.h-games`, `.h-apps`, etc.
+### B) Latest-first issue prompt
+```text
+Fix latest content ordering in index.html.
+Requirement: latest row must appear first on home and search.
+Do not change card layout.
+After fix, explain exactly which function/line behavior changed.
+Commit and push main.
+```
 
-### C) Latest-first on/off
-- File: `index.html`
-- In `fetchApps()` cache build area:
-  - current: `latestAppsCache = trimmed.reverse();`
-  - oldest-first চাইলে `.reverse()` remove করো
+### C) Details page change prompt
+```text
+Edit only dl.html.
+Task: [describe change].
+Keep 2-step download flow intact.
+Do not change sheet mapping.
+Commit and push main.
+```
 
-### D) Change smart link
-- File: `dl.html`
-- Constant: `SMART_LINK`
-
-### E) Change 2-step button text / download instruction
-- File: `dl.html`
-- Function: `setupDownloadFlow(app)`
-- How-to block: HTML section `.howto`
-
----
-
-## 9) Troubleshooting
-
-### Problem: New icon না দেখাচ্ছে
-- Check if icon URL direct image কিনা
-- Test by opening icon link in browser directly
-- Cache clear + hard refresh
-
-### Problem: Latest item top এ আসছে না
-- Confirm row actually sheet-এর শেষে add হয়েছে
-- Hard refresh (`Ctrl + F5`)
-- Check that `latestAppsCache = trimmed.reverse();` still আছে
-
-### Problem: Deploy update দেখতে পাচ্ছো না
-- Vercel deploy complete হয়েছে কিনা check
-- URL এ version query দাও: `?v=10`
-- Browser cache clear
+### D) Smart link update prompt
+```text
+Edit dl.html only.
+Change SMART_LINK constant to:
+[NEW_LINK]
+Do not modify other logic.
+Commit and push main.
+```
 
 ---
 
-## 10) Safe Update Checklist (Every Change)
+## 7) Required Output Format from Any AI
 
-1. File edit
-2. Save/commit
-3. Push to `main`
-4. Wait for Vercel deploy
-5. Test:
-   - Home page
-   - Search
-   - Details page (`dl.html?id=1`)
-   - Mobile + desktop
-6. Hard refresh
+AI-কে বলবে response এ অবশ্যই দেবে:
+
+1. What changed (max 5 bullet)
+2. Files changed
+3. Commit hash
+4. Live test checklist
 
 ---
 
-## 11) Recommended Workflow for Future
+## 8) Quick Test Checklist (AI অথবা তুমি)
 
-- Big UI edit → first desktop, then mobile polish
-- Keep `index.html` and `dl.html` design language consistent
-- Use direct image links only in sheet
-- After each major update, add a short note in this guide
+After every change test:
+
+1. Home opens (`/index.html`)
+2. Search works
+3. Latest item appears first
+4. Details opens (`/dl.html?id=1`)
+5. Step-1 smart link works
+6. Step-2 final download works
+7. Mobile + desktop layout okay
 
 ---
 
-## 12) Final Notes
+## 9) Rollback Prompt (emergency)
 
-তুমি এখন **new tab থেকে যেকোনো সময়** project maintain করতে পারবে:
-- GitHub web edit
-- Auto deploy
-- Sheet-based data updates
+যদি AI খারাপ change করে:
 
-If needed later, this file can be expanded with:
-- SEO checklist
-- ad placement map
-- release log table
-- rollback command list
+```text
+Revert last commit on main for this repo.
+Then push main.
+Report reverted commit hash and new revert commit hash.
+```
+
+---
+
+## 10) BrowserOS/New Tab Workflow (your exact use case)
+
+তুমি যেহেতু new tab এ agent দিয়ে কাজ করাও:
+
+1. New tab open
+2. AI chat এ Master Prompt paste
+3. Task line লিখে send
+4. AI commit hash দিলে save করে রাখো
+5. Live site `?v=timestamp` দিয়ে check
+
+Example:
+`https://modvault-site.vercel.app/?v=1710000000`
+
+---
+
+## 11) Project Ownership Notes
+
+- তুমি manual code edit না করলেও সমস্যা নেই
+- এই guide follow করলে যে কোনো AI agent consistent change করতে পারবে
+- সবসময় small scoped prompt দাও (একবারে একটাই কাজ)
+
+---
+
+## 12) Current Important Constants/Behaviors
+
+- `SMART_LINK` in `dl.html`
+- Latest-first ordering logic in `index.html`
+- Google Sheet live fetch + mapping in both pages
+
+এগুলো change করতে চাইলে prompt-এ explicitly লিখবে।
