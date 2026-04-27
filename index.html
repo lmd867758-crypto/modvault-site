@@ -624,6 +624,10 @@
         gap: 8px;
         grid-auto-flow: row dense;
       }
+      /* Mobile: first row cards hide (start from 2nd row) */
+      .grid > .card:nth-child(-n + 3) {
+        display: none;
+      }
       .card {
         border-radius: 14px;
         min-height: 0;
