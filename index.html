@@ -1034,6 +1034,7 @@
 
       grid.innerHTML = filtered.map((app, idx) => {
         const thumb = app.icon || fallbackThumb(app);
+        const rating = starsFromName(app.name);
         const miniCount = numberFromName(app.name, 43);
         const head = escapeHtml(app.vCategory);
         const title = escapeHtml(app.name);
@@ -1048,6 +1049,10 @@
               <div class="title">${title}</div>
               <div class="thumb-wrap">
                 <img class="thumb" src="${escapeHtml(thumb)}" alt="${title}" loading="lazy" />
+              </div>
+              <div class="meta">
+                <span class="text-muted">${escapeHtml(app.platform || 'Android')}</span>
+                <span class="stars">${rating}</span>
               </div>
               <div class="meta">
                 <span>${miniCount} ${app.vCategory === 'Video' ? 'Plays' : 'Downloads'}</span>
