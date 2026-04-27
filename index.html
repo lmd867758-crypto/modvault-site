@@ -612,47 +612,27 @@
         margin-top: auto;
       }
 
-      /* Mobile: green/small-first pattern always repeat */
-      .grid > .card:nth-child(8n + 1) { grid-column: span 4; grid-row: span 7; }
-      .grid > .card:nth-child(8n + 2) { grid-column: span 3; grid-row: span 7; }
-      .grid > .card:nth-child(8n + 3) { grid-column: span 5; grid-row: span 7; }
-      .grid > .card:nth-child(8n + 4) { grid-column: span 6; grid-row: span 9; }
-      .grid > .card:nth-child(8n + 5) { grid-column: span 6; grid-row: span 9; }
-      .grid > .card:nth-child(8n + 6) { grid-column: span 6; grid-row: span 12; }
-      .grid > .card:nth-child(8n + 7) { grid-column: span 6; grid-row: span 6; }
-      .grid > .card:nth-child(8n + 8) { grid-column: span 6; grid-row: span 6; }
+      /* Mobile: start from old 2nd-line look, no tiny 3-box line */
+      .grid > .card:nth-child(5n + 1) { grid-column: span 6; grid-row: span 9; }
+      .grid > .card:nth-child(5n + 2) { grid-column: span 6; grid-row: span 9; }
+      .grid > .card:nth-child(5n + 3) { grid-column: span 6; grid-row: span 12; }
+      .grid > .card:nth-child(5n + 4) { grid-column: span 6; grid-row: span 6; }
+      .grid > .card:nth-child(5n + 5) { grid-column: span 6; grid-row: span 6; }
 
-      .grid > .card:nth-child(8n + 1) .title,
-      .grid > .card:nth-child(8n + 2) .title,
-      .grid > .card:nth-child(8n + 3) .title,
-      .grid > .card:nth-child(8n + 7) .title,
-      .grid > .card:nth-child(8n + 8) .title {
+      .grid > .card:nth-child(5n + 4) .title,
+      .grid > .card:nth-child(5n + 5) .title {
         -webkit-line-clamp: 1;
         min-height: 20px;
         font-size: 12px;
       }
 
-      .grid > .card:nth-child(8n + 1) .meta:first-of-type,
-      .grid > .card:nth-child(8n + 2) .meta:first-of-type,
-      .grid > .card:nth-child(8n + 3) .meta:first-of-type,
-      .grid > .card:nth-child(8n + 7) .meta:first-of-type,
-      .grid > .card:nth-child(8n + 8) .meta:first-of-type {
-        display: none;
-      }
-
-      .grid > .card:nth-child(8n + 1) .meta,
-      .grid > .card:nth-child(8n + 2) .meta,
-      .grid > .card:nth-child(8n + 3) .meta,
-      .grid > .card:nth-child(8n + 7) .meta,
-      .grid > .card:nth-child(8n + 8) .meta {
+      .grid > .card:nth-child(5n + 4) .meta,
+      .grid > .card:nth-child(5n + 5) .meta {
         font-size: 10px;
       }
 
-      .grid > .card:nth-child(8n + 1) .button,
-      .grid > .card:nth-child(8n + 2) .button,
-      .grid > .card:nth-child(8n + 3) .button,
-      .grid > .card:nth-child(8n + 7) .button,
-      .grid > .card:nth-child(8n + 8) .button {
+      .grid > .card:nth-child(5n + 4) .button,
+      .grid > .card:nth-child(5n + 5) .button {
         width: 70px;
         height: 26px;
         font-size: 14px;
@@ -766,8 +746,7 @@
     document.title = BRAND;
 
     const PAGE_SIZE = 24;
-    const SKIP_ROWS = 3;
-    const MOBILE_SKIP_CARDS = 3;
+    const SKIP_ROWS = 0;
 
     let apps = [];
     let activeFilter = "All";
@@ -1019,9 +998,6 @@
         return inFilter && inSearch;
       });
 
-      if (window.innerWidth <= 980) {
-        filtered = filtered.slice(MOBILE_SKIP_CARDS);
-      }
 
 
       if (search && !allLoaded && !loadingAllForSearch) {
