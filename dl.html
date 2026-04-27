@@ -30,12 +30,16 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html { scroll-behavior: smooth; }
+
     body {
       font-family: 'Manrope', sans-serif;
       color: var(--ink);
       background: linear-gradient(180deg, #edf2f6 0%, #eef3f6 100%);
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      -webkit-overflow-scrolling: touch;
     }
 
     .page {
