@@ -612,19 +612,19 @@
         margin-top: auto;
       }
 
-      /* Mobile pattern shifted: first row removed from sequence */
-      .grid > .card:nth-child(8n + 1) { grid-column: span 6; grid-row: span 9; }
-      .grid > .card:nth-child(8n + 2) { grid-column: span 6; grid-row: span 9; }
-      .grid > .card:nth-child(8n + 3) { grid-column: span 6; grid-row: span 12; }
-      .grid > .card:nth-child(8n + 4) { grid-column: span 6; grid-row: span 6; }
-      .grid > .card:nth-child(8n + 5) { grid-column: span 6; grid-row: span 6; }
-      .grid > .card:nth-child(8n + 6) { grid-column: span 4; grid-row: span 7; }
-      .grid > .card:nth-child(8n + 7) { grid-column: span 3; grid-row: span 7; }
-      .grid > .card:nth-child(8n + 8) { grid-column: span 5; grid-row: span 7; }
+      /* Mobile: green/small-first pattern always repeat */
+      .grid > .card:nth-child(8n + 1) { grid-column: span 4; grid-row: span 7; }
+      .grid > .card:nth-child(8n + 2) { grid-column: span 3; grid-row: span 7; }
+      .grid > .card:nth-child(8n + 3) { grid-column: span 5; grid-row: span 7; }
+      .grid > .card:nth-child(8n + 4) { grid-column: span 6; grid-row: span 9; }
+      .grid > .card:nth-child(8n + 5) { grid-column: span 6; grid-row: span 9; }
+      .grid > .card:nth-child(8n + 6) { grid-column: span 6; grid-row: span 12; }
+      .grid > .card:nth-child(8n + 7) { grid-column: span 6; grid-row: span 6; }
+      .grid > .card:nth-child(8n + 8) { grid-column: span 6; grid-row: span 6; }
 
-      .grid > .card:nth-child(8n + 4) .title,
-      .grid > .card:nth-child(8n + 5) .title,
-      .grid > .card:nth-child(8n + 6) .title,
+      .grid > .card:nth-child(8n + 1) .title,
+      .grid > .card:nth-child(8n + 2) .title,
+      .grid > .card:nth-child(8n + 3) .title,
       .grid > .card:nth-child(8n + 7) .title,
       .grid > .card:nth-child(8n + 8) .title {
         -webkit-line-clamp: 1;
@@ -632,25 +632,25 @@
         font-size: 12px;
       }
 
-      .grid > .card:nth-child(8n + 4) .meta:first-of-type,
-      .grid > .card:nth-child(8n + 5) .meta:first-of-type,
-      .grid > .card:nth-child(8n + 6) .meta:first-of-type,
+      .grid > .card:nth-child(8n + 1) .meta:first-of-type,
+      .grid > .card:nth-child(8n + 2) .meta:first-of-type,
+      .grid > .card:nth-child(8n + 3) .meta:first-of-type,
       .grid > .card:nth-child(8n + 7) .meta:first-of-type,
       .grid > .card:nth-child(8n + 8) .meta:first-of-type {
         display: none;
       }
 
-      .grid > .card:nth-child(8n + 4) .meta,
-      .grid > .card:nth-child(8n + 5) .meta,
-      .grid > .card:nth-child(8n + 6) .meta,
+      .grid > .card:nth-child(8n + 1) .meta,
+      .grid > .card:nth-child(8n + 2) .meta,
+      .grid > .card:nth-child(8n + 3) .meta,
       .grid > .card:nth-child(8n + 7) .meta,
       .grid > .card:nth-child(8n + 8) .meta {
         font-size: 10px;
       }
 
-      .grid > .card:nth-child(8n + 4) .button,
-      .grid > .card:nth-child(8n + 5) .button,
-      .grid > .card:nth-child(8n + 6) .button,
+      .grid > .card:nth-child(8n + 1) .button,
+      .grid > .card:nth-child(8n + 2) .button,
+      .grid > .card:nth-child(8n + 3) .button,
       .grid > .card:nth-child(8n + 7) .button,
       .grid > .card:nth-child(8n + 8) .button {
         width: 70px;
@@ -766,10 +766,11 @@
     document.title = BRAND;
 
     const PAGE_SIZE = 24;
+    const SKIP_ROWS = 3;
 
     let apps = [];
     let activeFilter = "All";
-    let loadedRows = 0;
+    let loadedRows = SKIP_ROWS;
     let allLoaded = false;
     let isLoadingMore = false;
     let loadingAllForSearch = false;
@@ -967,7 +968,7 @@
 
       if (reset) {
         apps = [];
-        loadedRows = 0;
+        loadedRows = SKIP_ROWS;
         allLoaded = false;
       }
 
@@ -1017,9 +1018,6 @@
         return inFilter && inSearch;
       });
 
-      if (window.innerWidth <= 980) {
-        filtered = filtered.slice(3);
-      }
 
       if (search && !allLoaded && !loadingAllForSearch) {
         ensureAllDataForSearch();
