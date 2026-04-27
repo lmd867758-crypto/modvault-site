@@ -850,8 +850,31 @@
         .replace(/'/g, "&#39;");
     }
 
-    function isLikelyImageUrl(url = "") {
-      return /\.(png|jpe?g|webp|gif|svg|avif)(\?|#|$)/i.test(String(url).trim());
+    function normalizeIconUrl(url = "") {
+      const raw = String(url || "").trim();
+      if (!raw) return "";
+      if (/^data:image\//i.test(raw)) return raw;
+
+      let parsed;
+      try {
+        parsed = new URL(raw);
+      } catch {
+        return "";
+      }
+
+      if (!/^https?:$/i.test(parsed.protocol)) return "";
+
+      const host = parsed.hostname.toLowerCase();
+      if (host.includes("drive.google.com")) {
+        const idFromPath = parsed.pathname.match(/\/file\/d\/([^/]+)/i)?.[1];
+        const idFromQuery = parsed.searchParams.get("id");
+        const fileId = idFromPath || idFromQuery;
+        if (fileId) {
+          return `https://drive.google.com/uc?export=view&id=${encodeURIComponent(fileId)}`;
+        }
+      }
+
+      return raw;
     }
 
     function visualCategory(rawCategory = "", features = "", name = "", description = "", downloadUrl = "") {
@@ -963,7 +986,7 @@
           const features = read(IDX.features, "").trim();
           const category = read(IDX.category, "").trim();
           const icon = read(IDX.icon, "").trim();
-          const safeIcon = isLikelyImageUrl(icon) ? icon : "";
+          const safeIcon = normalizeIconUrl(icon);
 
           return {
             id: offset + rowIndex + 1,
@@ -1075,7 +1098,7 @@
             <div class="card-body">
               <div class="title">${title}</div>
               <div class="thumb-wrap">
-                <img class="thumb" src="${escapeHtml(thumb)}" alt="${title}" loading="lazy" />
+                <img class="thumb" src="${escapeHtml(thumb)}" alt="${title}" loading="lazy" onerror="this.onerror=null;this.src='${escapeHtml(fallbackThumb(app))}'" />
               </div>
               <div class="meta">
                 <span class="text-muted">${escapeHtml(app.platform || 'Android')}</span>

@@ -353,8 +353,31 @@
       return JSON.parse(text.substring(47).slice(0, -2));
     }
 
-    function isLikelyImageUrl(url = "") {
-      return /\.(png|jpe?g|webp|gif|svg|avif)(\?|#|$)/i.test(String(url).trim());
+    function normalizeIconUrl(url = "") {
+      const raw = String(url || "").trim();
+      if (!raw) return "";
+      if (/^data:image\//i.test(raw)) return raw;
+
+      let parsed;
+      try {
+        parsed = new URL(raw);
+      } catch {
+        return "";
+      }
+
+      if (!/^https?:$/i.test(parsed.protocol)) return "";
+
+      const host = parsed.hostname.toLowerCase();
+      if (host.includes("drive.google.com")) {
+        const idFromPath = parsed.pathname.match(/\/file\/d\/([^/]+)/i)?.[1];
+        const idFromQuery = parsed.searchParams.get("id");
+        const fileId = idFromPath || idFromQuery;
+        if (fileId) {
+          return `https://drive.google.com/uc?export=view&id=${encodeURIComponent(fileId)}`;
+        }
+      }
+
+      return raw;
     }
 
     function mapCategory(rawCategory = "", features = "", name = "", description = "") {
@@ -425,7 +448,7 @@
       const features = read(IDX.features, "").trim();
       const category = mapCategory(read(IDX.category, ""), features, name, description);
       const rawIcon = read(IDX.icon, "").trim();
-      const safeIcon = isLikelyImageUrl(rawIcon) ? rawIcon : "";
+      const safeIcon = normalizeIconUrl(rawIcon);
 
       return {
         id,
