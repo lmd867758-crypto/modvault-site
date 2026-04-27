@@ -754,10 +754,11 @@
 
     let apps = [];
     let activeFilter = "All";
-    let loadedRows = SKIP_ROWS;
+    let loadedRows = 0;
     let allLoaded = false;
     let isLoadingMore = false;
     let loadingAllForSearch = false;
+    let latestAppsCache = null;
 
     function parseGvizJson(text) {
       const match = text.match(/google\.visualization\.Query\.setResponse\((.*)\);?\s*$/s);
@@ -874,66 +875,74 @@
     async function fetchApps(limit = PAGE_SIZE, offset = 0) {
       if (!SHEET_ID) throw new Error("Missing SHEET_ID in config.js");
 
-      const tq = encodeURIComponent(`select * limit ${limit} offset ${offset}`);
-      const cacheBust = Date.now();
-      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_TAB)}&tqx=out:json&tq=${tq}&_=${cacheBust}`;
-      const res = await fetch(url);
-      const text = await res.text();
-      const json = parseGvizJson(text);
+      if (!latestAppsCache) {
+        const tq = encodeURIComponent(`select *`);
+        const cacheBust = Date.now();
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_TAB)}&tqx=out:json&tq=${tq}&_=${cacheBust}`;
+        const res = await fetch(url);
+        const text = await res.text();
+        const json = parseGvizJson(text);
 
-      const cols = json.table.cols || [];
-      const colMap = {};
-      cols.forEach((c, i) => {
-        const key = String(c?.label || c?.id || "").trim().toLowerCase();
-        if (key) colMap[key] = i;
-      });
+        const cols = json.table.cols || [];
+        const colMap = {};
+        cols.forEach((c, i) => {
+          const key = String(c?.label || c?.id || "").trim().toLowerCase();
+          if (key) colMap[key] = i;
+        });
 
-      const getIdx = (...keys) => {
-        for (const key of keys) {
-          const k = key.toLowerCase();
-          if (Object.prototype.hasOwnProperty.call(colMap, k)) return colMap[k];
-        }
-        return -1;
-      };
+        const getIdx = (...keys) => {
+          for (const key of keys) {
+            const k = key.toLowerCase();
+            if (Object.prototype.hasOwnProperty.call(colMap, k)) return colMap[k];
+          }
+          return -1;
+        };
 
-      const IDX = {
-        name: getIdx("name"),
-        description: getIdx("description"),
-        icon: getIdx("icon"),
-        version: getIdx("version"),
-        platform: getIdx("platform"),
-        downloadUrl: getIdx("downloadurl", "download url", "download"),
-        features: getIdx("features"),
-        category: getIdx("category")
-      };
+        const IDX = {
+          name: getIdx("name"),
+          description: getIdx("description"),
+          icon: getIdx("icon"),
+          version: getIdx("version"),
+          platform: getIdx("platform"),
+          downloadUrl: getIdx("downloadurl", "download url", "download"),
+          features: getIdx("features"),
+          category: getIdx("category")
+        };
 
-      const rows = json.table.rows || [];
+        const rows = json.table.rows || [];
 
-      return rows
-        .map((row, rowIndex) => {
-          const read = (idx, fallback = "") => idx >= 0 ? normalize(row.c?.[idx], fallback) : fallback;
+        const mapped = rows
+          .map((row, rowIndex) => {
+            const read = (idx, fallback = "") => idx >= 0 ? normalize(row.c?.[idx], fallback) : fallback;
 
-          const name = read(IDX.name, "").trim();
-          const description = read(IDX.description, "").trim();
-          const features = read(IDX.features, "").trim();
-          const category = read(IDX.category, "").trim();
-          const icon = read(IDX.icon, "").trim();
-          const safeIcon = normalizeIconUrl(icon);
+            const name = read(IDX.name, "").trim();
+            const description = read(IDX.description, "").trim();
+            const features = read(IDX.features, "").trim();
+            const category = read(IDX.category, "").trim();
+            const icon = read(IDX.icon, "").trim();
+            const safeIcon = normalizeIconUrl(icon);
+            const downloadUrl = read(IDX.downloadUrl, "").trim();
 
-          return {
-            id: offset + rowIndex + 1,
-            name,
-            description,
-            icon: safeIcon,
-            version: read(IDX.version, "").trim(),
-            platform: read(IDX.platform, "").trim(),
-            downloadUrl: read(IDX.downloadUrl, "").trim(),
-            features,
-            category,
-            vCategory: visualCategory(category, features, name, description, read(IDX.downloadUrl, "").trim())
-          };
-        })
-        .filter(app => app.name);
+            return {
+              id: rowIndex + 1,
+              name,
+              description,
+              icon: safeIcon,
+              version: read(IDX.version, "").trim(),
+              platform: read(IDX.platform, "").trim(),
+              downloadUrl,
+              features,
+              category,
+              vCategory: visualCategory(category, features, name, description, downloadUrl)
+            };
+          })
+          .filter(app => app.name);
+
+        const trimmed = SKIP_ROWS > 0 ? mapped.slice(SKIP_ROWS) : mapped;
+        latestAppsCache = trimmed.reverse();
+      }
+
+      return latestAppsCache.slice(offset, offset + limit);
     }
 
     function updateLoadMoreVisibility(searchQuery = "") {
@@ -952,7 +961,7 @@
 
       if (reset) {
         apps = [];
-        loadedRows = SKIP_ROWS;
+        loadedRows = 0;
         allLoaded = false;
       }
 
