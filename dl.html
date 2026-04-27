@@ -241,6 +241,38 @@
       box-shadow: none;
     }
 
+    .share-btn {
+      border: 1px solid #9ed9e1;
+      border-radius: 999px;
+      height: 40px;
+      background: #ffffff;
+      color: #1f2f47;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .share-btn:hover {
+      background: #f4fbfd;
+    }
+
+    .share-status {
+      display: none;
+      border: 1px solid #cde6d4;
+      border-radius: 10px;
+      background: #eefcf2;
+      color: #1d6e3b;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.4;
+      padding: 8px 10px;
+    }
+
+    .share-status.show {
+      display: block;
+    }
+
     .hint {
       border: 1px solid #d8e2ec;
       border-radius: 12px;
@@ -369,6 +401,8 @@
         <div class="download-body">
           <div class="section-title">2-Step Download System</div>
           <button id="download-step-btn" class="download-btn" type="button">Step 1: Open Smart Link</button>
+          <button id="copy-link-btn" class="share-btn" type="button">Copy App Link</button>
+          <div id="copy-link-status" class="share-status" aria-live="polite"></div>
           <div id="download-hint" class="hint">
             First click will open smart link. Then come back and click again for final download.
           </div>
@@ -604,6 +638,46 @@
       };
     }
 
+    async function copyToClipboard(text) {
+      try {
+        if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(text);
+          return true;
+        }
+      } catch {}
+
+      try {
+        const el = document.createElement("textarea");
+        el.value = text;
+        el.setAttribute("readonly", "");
+        el.style.position = "fixed";
+        el.style.opacity = "0";
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand("copy");
+        document.body.removeChild(el);
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    function setupShareLink(app) {
+      const btn = document.getElementById("copy-link-btn");
+      const status = document.getElementById("copy-link-status");
+      if (!btn || !status) return;
+
+      const shareUrl = `${window.location.origin}/dl.html?id=${app.id}`;
+
+      btn.addEventListener("click", async () => {
+        const ok = await copyToClipboard(shareUrl);
+        status.classList.add("show");
+        status.textContent = ok
+          ? "✅ App link copied. Now you can share it."
+          : "❌ Copy failed. Please copy URL manually from browser bar.";
+      });
+    }
+
     function setupDownloadFlow(app) {
       const btn = document.getElementById("download-step-btn");
       const hint = document.getElementById("download-hint");
@@ -678,6 +752,7 @@
       }
 
       setupDownloadFlow(app);
+      setupShareLink(app);
 
       document.getElementById("loading").style.display = "none";
       document.getElementById("content").style.display = "grid";
