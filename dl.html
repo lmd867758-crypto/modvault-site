@@ -11,218 +11,265 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f5f6fa;
-      --surface: #fff;
+      --bg: #eef3f6;
+      --panel: #f6f9fb;
+      --surface: #ffffff;
       --ink: #1A1B35;
-      --muted: #5f6686;
+      --muted: #566078;
       --line: #1A1B35;
-      --pastel-blue: #dcecff;
-      --muted-orange: #ffe3cf;
-      --pale-yellow: #fff4bf;
-      --mint-green: #dbf7ec;
-      --lavender: #ece3ff;
-      --radius-xl: 26px;
-      --radius-lg: 20px;
-      --radius-md: 16px;
-      --shadow-soft: 0 14px 35px rgba(26, 27, 53, 0.08);
+      --green: #42be8a;
+      --blue: #2d9cdb;
+      --orange: #f5a623;
+      --purple: #8e44dc;
+      --red: #eb3b3b;
+      --exe: #19b9a7;
+      --shadow: 0 12px 28px rgba(24, 35, 60, .12);
+      --radius-card: 16px;
+      --radius-main: 24px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Manrope', sans-serif;
-      background:
-        radial-gradient(circle at 0% 0%, #eef1ff 0%, transparent 36%),
-        radial-gradient(circle at 100% 0%, #fff4bf70 0%, transparent 35%),
-        linear-gradient(180deg, #fafbff 0%, var(--bg) 100%);
       color: var(--ink);
+      background: linear-gradient(180deg, #edf2f6 0%, #eef3f6 100%);
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
 
     .page {
       width: min(980px, calc(100% - 24px));
-      margin: 0 auto;
-      padding: 12px 0 30px;
+      margin: 12px auto;
+      background: #f9fbfc;
+      border-radius: 22px;
+      box-shadow: 0 2px 0 rgba(255,255,255,.8) inset;
+      padding-bottom: 16px;
     }
 
-    .nav {
-      position: sticky;
-      top: 8px;
-      z-index: 30;
-      border: 3px solid var(--line);
-      border-radius: var(--radius-lg);
-      background: #ffffffd8;
-      backdrop-filter: blur(8px);
-      padding: 10px 12px;
+    .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 14px;
-      box-shadow: var(--shadow-soft);
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid #e1e8f0;
     }
 
     .brand {
-      text-decoration: none;
-      color: var(--ink);
       display: inline-flex;
       align-items: center;
-      gap: 9px;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--ink);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      font-size: 26px;
+      line-height: 1;
       min-width: 0;
     }
 
-    .brand-logo {
-      width: 36px;
-      height: 36px;
-      border-radius: 11px;
-      border: 3px solid var(--line);
+    .brand img {
+      width: 34px;
+      height: 34px;
       object-fit: contain;
-      background: #fff;
-      padding: 2px;
-      flex-shrink: 0;
+      border-radius: 10px;
     }
 
-    .brand-name {
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      font-size: 17px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 44vw;
+    .brand span em {
+      color: #21c3b0;
+      font-style: normal;
     }
 
-    .back {
+    .back-btn {
       text-decoration: none;
-      border: 2px solid var(--line);
-      border-radius: 999px;
-      padding: 7px 12px;
-      font-size: 12px;
+      color: #1f2a44;
+      font-size: 13px;
       font-weight: 800;
-      color: var(--ink);
+      border: 1px solid #cfd9e5;
+      border-radius: 999px;
       background: #fff;
+      padding: 8px 12px;
       white-space: nowrap;
     }
 
-    .shell {
-      border: 3px solid var(--line);
-      border-radius: var(--radius-xl);
-      background: linear-gradient(138deg, #fff 0%, #edf1ff 74%, #fff 100%);
-      padding: 16px;
-      display: grid;
-      gap: 14px;
-      box-shadow: var(--shadow-soft);
+    .status {
+      margin: 16px;
+      padding: 28px 14px;
+      border-radius: 18px;
+      border: 2px dashed #c8d3e0;
+      text-align: center;
+      font-weight: 700;
+      color: #52607d;
+      background: #fff;
     }
 
-    .head {
+    .content {
       display: grid;
-      grid-template-columns: 86px 1fr;
       gap: 12px;
+      padding: 14px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(26, 27, 53, .06);
+      overflow: hidden;
+    }
+
+    .card-head {
+      height: 30px;
+      display: flex;
       align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .01em;
+    }
+
+    .h-games { background: var(--green); }
+    .h-apps { background: var(--blue); }
+    .h-tools { background: var(--orange); }
+    .h-wallpaper { background: var(--purple); }
+    .h-video { background: var(--red); }
+    .h-exe { background: var(--exe); }
+
+    .hero-body {
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 12px;
+      align-items: start;
+      background: linear-gradient(180deg, rgba(45,156,219,.12) 0%, rgba(255,255,255,1) 66%);
+    }
+
+    .icon-wrap {
+      width: 90px;
+      aspect-ratio: 1/1;
+      border-radius: 16px;
+      background: #eef3f8;
+      border: 1px solid #dbe5f0;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
     }
 
     .icon {
-      width: 86px;
-      height: 86px;
-      border-radius: 20px;
-      border: 3px solid var(--line);
-      background: #fff;
-      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      padding: 8px;
     }
 
     .title {
-      font-size: clamp(24px, 6vw, 38px);
-      line-height: 1.03;
+      font-size: clamp(22px, 3.6vw, 36px);
+      line-height: 1.05;
       letter-spacing: -0.03em;
-      margin-bottom: 7px;
+      margin-bottom: 6px;
+      word-break: break-word;
     }
 
     .desc {
       color: var(--muted);
       font-size: 14px;
-      line-height: 1.58;
+      line-height: 1.55;
+      margin-bottom: 10px;
     }
 
     .chips {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 7px;
     }
 
     .chip {
-      border: 2px solid var(--line);
+      border: 1px solid #d7e2ee;
       border-radius: 999px;
-      padding: 5px 10px;
+      background: #eef4fa;
+      color: #23314a;
       font-size: 11px;
       font-weight: 800;
+      letter-spacing: .03em;
+      padding: 6px 10px;
       text-transform: uppercase;
-      letter-spacing: .06em;
-      background: #fff;
     }
 
-    .chip.c1 { background: var(--pastel-blue); }
-    .chip.c2 { background: var(--mint-green); }
-    .chip.c3 { background: var(--lavender); }
-
-    .cta-wrap {
-      border: 3px solid var(--line);
-      border-radius: 18px;
-      background: #fff;
-      padding: 14px;
+    .download-body,
+    .features-body {
+      padding: 12px;
       display: grid;
       gap: 10px;
     }
 
-    .download-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      min-height: 52px;
-      border: 3px solid var(--line);
-      border-radius: 999px;
-      background: var(--pale-yellow);
-      color: var(--ink);
-      font-size: 15px;
+    .section-title {
+      font-size: 14px;
       font-weight: 800;
-      cursor: pointer;
-      transition: transform .15s ease;
+      color: #21314a;
+      letter-spacing: .02em;
     }
 
-    .download-btn:hover { transform: translateY(-2px); }
-    .download-btn[aria-disabled="true"] {
-      pointer-events: none;
-      opacity: .58;
-      background: #f1f2f9;
+    .download-btn {
+      border: none;
+      border-radius: 999px;
+      height: 44px;
+      background: linear-gradient(180deg, #2bc8d7 0%, #10a8bc 100%);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.55), 0 8px 16px rgba(20, 144, 157, .24);
+    }
+
+    .download-btn.ready {
+      background: linear-gradient(180deg, #42be8a 0%, #2ea86f 100%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 8px 16px rgba(40, 145, 102, .23);
+    }
+
+    .download-btn:disabled {
+      opacity: .62;
+      cursor: not-allowed;
+      box-shadow: none;
     }
 
     .hint {
-      border: 2px solid var(--line);
-      border-radius: 14px;
-      padding: 10px 12px;
-      background: var(--muted-orange);
+      border: 1px solid #d8e2ec;
+      border-radius: 12px;
+      background: #f6faff;
+      color: #2f3c56;
       font-size: 13px;
       font-weight: 700;
       line-height: 1.45;
-      color: #3f4767;
+      padding: 10px;
     }
 
-    .feature-block {
-      border: 3px solid var(--line);
-      border-radius: 18px;
-      padding: 14px;
-      background: var(--surface);
-      display: grid;
-      gap: 8px;
+    .howto {
+      border: 1px solid #ffd39c;
+      border-radius: 12px;
+      background: #fff4e5;
+      padding: 10px;
+      color: #583f19;
     }
 
-    .feature-title {
+    .howto h3 {
       font-size: 13px;
       font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: .07em;
-      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .howto ol {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.5;
     }
 
     .feature-list {
@@ -232,85 +279,115 @@
     }
 
     .feature-list li {
-      border: 2px solid var(--line);
+      border: 1px solid #d7e2ee;
       border-radius: 12px;
       padding: 9px 10px;
       background: #fff;
       font-size: 13px;
       font-weight: 700;
       line-height: 1.4;
+      color: #22314a;
     }
-
-    .status {
-      border: 3px dashed var(--line);
-      border-radius: 16px;
-      background: #fff;
-      padding: 22px 14px;
-      text-align: center;
-      color: var(--muted);
-      font-weight: 700;
-    }
-
-    .skeleton {
-      height: 14px;
-      border-radius: 7px;
-      background: #e4e8f8;
-      animation: pulse 1.4s ease-in-out infinite;
-    }
-
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.45} }
 
     footer {
       text-align: center;
-      font-size: 11px;
-      color: #707795;
+      font-size: 12px;
+      color: #6d7892;
       font-weight: 700;
-      margin-top: 16px;
+      padding: 4px 14px 0;
     }
 
     @media (min-width: 860px) {
-      .shell { padding: 24px; }
-      .head { grid-template-columns: 118px 1fr; gap: 18px; }
-      .icon { width: 118px; height: 118px; border-radius: 24px; }
-      .cta-wrap { max-width: 560px; }
+      .content {
+        grid-template-columns: 1.2fr .8fr;
+        align-items: start;
+      }
+
+      .hero-card,
+      .features-card {
+        grid-column: 1;
+      }
+
+      .download-card {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        position: sticky;
+        top: 12px;
+      }
+
+      .hero-body {
+        grid-template-columns: 126px 1fr;
+        gap: 14px;
+        padding: 14px;
+      }
+
+      .icon-wrap {
+        width: 126px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="page">
-    <header class="nav">
-      <a class="brand" id="brandLink" href="index.html">
-        <img class="brand-logo" src="https://i.ibb.co.com/HfXybd5L/Gemini-Generated-Image-bje8lbbje8lbbje8-removebg-preview-1.png" alt="GridX Core logo" />
-        <span class="brand-name">GridX Core</span>
+    <header class="topbar">
+      <a class="brand" id="brandLink" href="index.html" aria-label="GridX Core home">
+        <img src="https://i.ibb.co.com/HfXybd5L/Gemini-Generated-Image-bje8lbbje8lbbje8-removebg-preview-1.png" alt="GridX Core" />
+        <span>GRID<em>X</em>&nbsp;CORE</span>
       </a>
-      <a class="back" href="index.html">← Back</a>
+      <a class="back-btn" href="index.html">← Back</a>
     </header>
 
-    <div id="loading" class="status">
-      <div class="skeleton" style="width:72%;margin:0 auto 10px;"></div>
-      <div class="skeleton" style="width:56%;margin:0 auto 10px;"></div>
-      <div class="skeleton" style="width:36%;margin:0 auto;"></div>
-    </div>
+    <div id="loading" class="status">Loading app details...</div>
 
-    <main id="content" class="shell" style="display:none;">
-      <section class="head">
-        <img id="app-icon" class="icon" alt="App icon" />
-        <div>
-          <h1 id="app-name" class="title"></h1>
-          <p id="app-desc" class="desc"></p>
+    <main id="content" class="content" style="display:none;">
+      <section class="card hero-card">
+        <div id="hero-head" class="card-head h-apps">
+          <span id="hero-cat">Apps</span>
+          <span>▦</span>
+        </div>
+        <div class="hero-body">
+          <div class="icon-wrap">
+            <img id="app-icon" class="icon" alt="App icon" />
+          </div>
+          <div>
+            <h1 id="app-name" class="title"></h1>
+            <p id="app-desc" class="desc"></p>
+            <div id="feature-chips" class="chips"></div>
+          </div>
         </div>
       </section>
 
-      <section id="feature-chips" class="chips"></section>
+      <section class="card download-card">
+        <div class="card-head h-exe">
+          <span>Download</span>
+          <span>⬇</span>
+        </div>
+        <div class="download-body">
+          <div class="section-title">2-Step Download System</div>
+          <button id="download-step-btn" class="download-btn" type="button">Step 1: Open Smart Link</button>
+          <div id="download-hint" class="hint">
+            First click will open smart link. Then come back and click again for final download.
+          </div>
 
-      <section class="cta-wrap">
-        <a id="download-btn" class="download-btn" target="_blank" rel="noopener noreferrer">Download Now</a>
-        <div id="download-hint" class="hint">Use the official direct download link from our live data sheet.</div>
+          <div class="howto">
+            <h3>How to Download</h3>
+            <ol>
+              <li>First click <strong>Open Smart Link</strong> (ads step).</li>
+              <li>Come back to this page.</li>
+              <li>Click again to get the real file download link.</li>
+            </ol>
+          </div>
+        </div>
       </section>
 
-      <section class="feature-block">
-        <div class="feature-title">Highlights</div>
-        <ul id="feature-list" class="feature-list"></ul>
+      <section class="card features-card">
+        <div class="card-head h-tools">
+          <span>Highlights</span>
+          <span>★</span>
+        </div>
+        <div class="features-body">
+          <ul id="feature-list" class="feature-list"></ul>
+        </div>
       </section>
     </main>
 
@@ -324,7 +401,10 @@
     const BRAND = window.APP_CONFIG?.BRAND || "GridX Core";
     const COPYRIGHT = window.APP_CONFIG?.COPYRIGHT || "© 2026 GridX Core";
 
-    document.querySelector('.brand-name').textContent = BRAND;
+    const SMART_LINK = "https://www.profitablecpmratenetwork.com/th4iq4cz?key=da8ba8716ee7c214e9decd3ec3f0f3dd";
+    const GATE_TTL_MS = 30 * 60 * 1000;
+
+    document.title = BRAND;
     document.getElementById('copyright').textContent = COPYRIGHT;
 
     function getAppId() {
@@ -380,27 +460,81 @@
       return raw;
     }
 
-    function mapCategory(rawCategory = "", features = "", name = "", description = "") {
-      const text = `${rawCategory} ${features} ${name} ${description}`.toLowerCase();
-      if (/emulator|ppsspp|psp|ps2|retro|nintendo|dolphin|bios/.test(text)) return "Emulators";
-      if (/media|video|movie|stream|music|player|ott|youtube|netflix|audio/.test(text)) return "Media";
-      if (/action|game|fps|battle|racing|pvp|shooter|adventure|arcade/.test(text)) return "Action Games";
-      return "APKs";
+    function headClass(category) {
+      if (category === "Games") return "h-games";
+      if (category === "Tools") return "h-tools";
+      if (category === "EXE") return "h-exe";
+      if (category === "Wallpaper") return "h-wallpaper";
+      if (category === "Video") return "h-video";
+      return "h-apps";
     }
 
-    function buildFallbackIcon(label = "A", category = "APKs") {
-      const bg =
-        category === "Action Games" ? "#dcecff" :
-        category === "Emulators" ? "#ffe3cf" :
-        category === "Media" ? "#dbf7ec" : "#ece3ff";
+    function catIcon(category) {
+      if (category === "Video") return "▶";
+      if (category === "Wallpaper") return "🖼";
+      if (category === "Tools") return "🛠";
+      if (category === "EXE") return "💻";
+      if (category === "Games") return "🎮";
+      return "▦";
+    }
+
+    function visualCategory(rawCategory = "", features = "", name = "", description = "", downloadUrl = "") {
+      const text = `${rawCategory} ${features} ${name} ${description} ${downloadUrl}`.toLowerCase();
+      if (/\bexe\b|\.exe(\?|$)|windows|pc\s?game|desktop/.test(text)) return "EXE";
+      if (/wallpaper|theme|background/.test(text)) return "Wallpaper";
+      if (/video|media|movie|stream|player|youtube|netflix|audio/.test(text)) return "Video";
+      if (/emulator|ppsspp|psp|ps2|retro|nintendo|dolphin|bios|tool|utility/.test(text)) return "Tools";
+      if (/action|game|fps|battle|racing|pvp|shooter|adventure|arcade/.test(text)) return "Games";
+      return "Apps";
+    }
+
+    function buildFallbackIcon(label = "A", category = "Apps") {
+      const color =
+        category === "Games" ? "#42be8a" :
+        category === "Tools" ? "#f5a623" :
+        category === "EXE" ? "#19b9a7" :
+        category === "Wallpaper" ? "#8e44dc" :
+        category === "Video" ? "#eb3b3b" : "#2d9cdb";
 
       const safeLabel = String(label || "A").charAt(0).toUpperCase();
-      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'>
-        <rect width='100%' height='100%' rx='30' fill='${bg}'/>
-        <rect x='24' y='24' width='172' height='172' rx='30' fill='white' stroke='#1A1B35' stroke-width='10'/>
-        <text x='50%' y='56%' text-anchor='middle' font-family='Manrope,Arial' font-size='88' font-weight='800' fill='#1A1B35'>${safeLabel}</text>
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'>
+        <defs>
+          <linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+            <stop stop-color='${color}' offset='0'/>
+            <stop stop-color='#1A1B35' offset='1'/>
+          </linearGradient>
+        </defs>
+        <rect width='100%' height='100%' fill='url(#g)'/>
+        <text x='50%' y='57%' text-anchor='middle' font-family='Manrope,Arial' font-size='132' font-weight='800' fill='white'>${safeLabel}</text>
       </svg>`;
+
       return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+    }
+
+    function gateKey(appId) {
+      return `gx_smart_gate_${appId}`;
+    }
+
+    function isGateUnlocked(appId) {
+      try {
+        const raw = localStorage.getItem(gateKey(appId));
+        if (!raw) return false;
+        const data = JSON.parse(raw);
+        if (!data?.at) return false;
+        if (Date.now() - data.at > GATE_TTL_MS) {
+          localStorage.removeItem(gateKey(appId));
+          return false;
+        }
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    function setGateUnlocked(appId) {
+      try {
+        localStorage.setItem(gateKey(appId), JSON.stringify({ at: Date.now() }));
+      } catch {}
     }
 
     async function fetchApp(id) {
@@ -447,7 +581,9 @@
       const name = read(IDX.name, "App").trim();
       const description = read(IDX.description, "").trim();
       const features = read(IDX.features, "").trim();
-      const category = mapCategory(read(IDX.category, ""), features, name, description);
+      const rawCategory = read(IDX.category, "").trim();
+      const downloadUrl = read(IDX.downloadUrl, "").trim();
+      const category = visualCategory(rawCategory, features, name, description, downloadUrl);
       const rawIcon = read(IDX.icon, "").trim();
       const safeIcon = normalizeIconUrl(rawIcon);
 
@@ -458,16 +594,60 @@
         icon: safeIcon,
         version: read(IDX.version, "").trim(),
         platform: read(IDX.platform, "").trim(),
-        downloadUrl: read(IDX.downloadUrl, "").trim(),
+        downloadUrl,
         features,
         category
       };
+    }
+
+    function setupDownloadFlow(app) {
+      const btn = document.getElementById("download-step-btn");
+      const hint = document.getElementById("download-hint");
+
+      if (!app.downloadUrl) {
+        btn.disabled = true;
+        btn.textContent = "Download Link Coming Soon";
+        hint.textContent = "No download URL found in this sheet row.";
+        return;
+      }
+
+      let unlocked = isGateUnlocked(app.id);
+
+      const renderState = () => {
+        if (unlocked) {
+          btn.classList.add("ready");
+          btn.textContent = "Step 2: Download Now";
+          hint.textContent = "Smart link step done ✅ এখন আবার click করলে direct download open হবে.";
+        } else {
+          btn.classList.remove("ready");
+          btn.textContent = "Step 1: Open Smart Link";
+          hint.textContent = "First click open smart link (ads step). Come back and click again for download.";
+        }
+      };
+
+      btn.addEventListener("click", () => {
+        if (!unlocked) {
+          window.open(SMART_LINK, "_blank", "noopener,noreferrer");
+          unlocked = true;
+          setGateUnlocked(app.id);
+          renderState();
+          return;
+        }
+
+        window.open(app.downloadUrl, "_blank", "noopener,noreferrer");
+      });
+
+      renderState();
     }
 
     function populatePage(app) {
       document.title = `${app.name} - ${BRAND}`;
       document.getElementById("app-name").textContent = app.name;
       document.getElementById("app-desc").textContent = app.description || "No description available.";
+
+      const heroHead = document.getElementById("hero-head");
+      heroHead.className = `card-head ${headClass(app.category)}`;
+      heroHead.innerHTML = `<span>${escapeHtml(app.category)}</span><span>${catIcon(app.category)}</span>`;
 
       const iconEl = document.getElementById("app-icon");
       const fallbackIcon = buildFallbackIcon(app.name, app.category);
@@ -477,9 +657,9 @@
       iconEl.src = app.icon || fallbackIcon;
 
       const chips = [];
-      if (app.category) chips.push(`<span class="chip c1">${escapeHtml(app.category)}</span>`);
-      if (app.version) chips.push(`<span class="chip c2">v${escapeHtml(app.version)}</span>`);
-      if (app.platform) chips.push(`<span class="chip c3">${escapeHtml(app.platform)}</span>`);
+      if (app.category) chips.push(`<span class="chip">${escapeHtml(app.category)}</span>`);
+      if (app.version) chips.push(`<span class="chip">v${escapeHtml(app.version)}</span>`);
+      if (app.platform) chips.push(`<span class="chip">${escapeHtml(app.platform)}</span>`);
       document.getElementById("feature-chips").innerHTML = chips.join("");
 
       const featureItems = app.features
@@ -493,18 +673,7 @@
         featureList.innerHTML = `<li>Stable build for smooth day-to-day usage.</li>`;
       }
 
-      const btn = document.getElementById("download-btn");
-      const hint = document.getElementById("download-hint");
-      if (app.downloadUrl) {
-        btn.href = app.downloadUrl;
-        btn.setAttribute("aria-disabled", "false");
-        hint.textContent = "Direct download link is loaded from Google Sheet data source.";
-      } else {
-        btn.removeAttribute("href");
-        btn.setAttribute("aria-disabled", "true");
-        btn.textContent = "Download Link Coming Soon";
-        hint.textContent = "No direct download URL found in the current sheet row.";
-      }
+      setupDownloadFlow(app);
 
       document.getElementById("loading").style.display = "none";
       document.getElementById("content").style.display = "grid";
@@ -524,7 +693,7 @@
         populatePage(app);
       } catch (err) {
         console.error(err);
-        showError("Error loading app data. Check your Sheet settings and visibility.");
+        showError("Error loading app data. Check your Sheet visibility/settings.");
       }
     });
   </script>
