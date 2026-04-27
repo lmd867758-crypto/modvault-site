@@ -8,6 +8,7 @@
 - `index.html` → home + category grid + app library
 - `dl.html` → single app details + direct download page
 - `config.js` → Sheet ID / Tab / Brand config
+- `PROJECT_GUIDE.md` → full handover + maintenance guide (new tab থেকে edit workflow)
 
 ---
 
