@@ -277,10 +277,12 @@
     }
 
     .card {
+      --tone: 45, 156, 219;
       background: #fff;
       border-radius: var(--radius-card);
       overflow: hidden;
       box-shadow: var(--shadow);
+      border: 1px solid rgba(26, 27, 53, .06);
       text-decoration: none;
       color: inherit;
       display: grid;
@@ -311,6 +313,12 @@
       flex-direction: column;
       gap: 8px;
       height: 100%;
+      background:
+        linear-gradient(180deg,
+          rgba(var(--tone), .20) 0%,
+          rgba(var(--tone), .08) 34%,
+          rgba(255, 255, 255, 0) 70%),
+        #fff;
     }
 
     .title {
@@ -387,6 +395,13 @@
     .h-wallpaper { background: var(--purple); }
     .h-video { background: var(--red); }
     .h-exe { background: var(--exe); }
+
+    .tone-games { --tone: 66, 190, 138; }
+    .tone-apps { --tone: 45, 156, 219; }
+    .tone-tools { --tone: 245, 166, 35; }
+    .tone-wallpaper { --tone: 142, 68, 220; }
+    .tone-video { --tone: 235, 59, 59; }
+    .tone-exe { --tone: 25, 185, 167; }
 
     .footer {
       display: flex;
@@ -855,6 +870,15 @@
       return "h-apps";
     }
 
+    function toneClass(category) {
+      if (category === "Games") return "tone-games";
+      if (category === "Tools") return "tone-tools";
+      if (category === "EXE") return "tone-exe";
+      if (category === "Wallpaper") return "tone-wallpaper";
+      if (category === "Video") return "tone-video";
+      return "tone-apps";
+    }
+
     function fallbackThumb(app) {
       const label = (app.name || "App").trim().charAt(0).toUpperCase() || "A";
       const color =
@@ -1040,7 +1064,7 @@
         const title = escapeHtml(app.name);
 
         return `
-          <a class="card" href="./dl.html?id=${app.id}">
+          <a class="card ${toneClass(app.vCategory)}" href="./dl.html?id=${app.id}">
             <div class="card-head ${headClass(app.vCategory)}">
               <span>${head}</span>
               <span>${app.vCategory === 'Video' ? '▶' : app.vCategory === 'Wallpaper' ? '🖼' : app.vCategory === 'Tools' ? '🛠' : app.vCategory === 'EXE' ? '💻' : app.vCategory === 'Games' ? '🎮' : '▦'}</span>
