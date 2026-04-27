@@ -278,11 +278,17 @@
 
     .card {
       --tone: 45, 156, 219;
-      background: #fff;
+      background: linear-gradient(
+        180deg,
+        rgba(var(--tone), .42) 0%,
+        rgba(var(--tone), .28) 34%,
+        rgba(var(--tone), .18) 68%,
+        rgba(var(--tone), .14) 100%
+      );
       border-radius: var(--radius-card);
       overflow: hidden;
       box-shadow: var(--shadow);
-      border: 1px solid rgba(26, 27, 53, .06);
+      border: 1px solid rgba(var(--tone), .32);
       text-decoration: none;
       color: inherit;
       display: grid;
@@ -313,12 +319,7 @@
       flex-direction: column;
       gap: 8px;
       height: 100%;
-      background:
-        linear-gradient(180deg,
-          rgba(var(--tone), .20) 0%,
-          rgba(var(--tone), .08) 34%,
-          rgba(255, 255, 255, 0) 70%),
-        #fff;
+      background: transparent;
     }
 
     .title {
